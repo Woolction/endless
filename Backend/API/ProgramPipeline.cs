@@ -18,7 +18,9 @@ using System.Text;
 using Domain.Interfaces;
 using Elastic.Clients.Elasticsearch;
 using Application;
-using Infrastructure.Managers;
+using Microsoft.AspNetCore.Http.Features;
+using System.Net.NetworkInformation;
+using Microsoft.Extensions.FileProviders;
 
 namespace API;
 
@@ -33,6 +35,15 @@ public static class ProgramPipeline
 
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
+
+        builder.WebHost.ConfigureKestrel(serverOptions =>
+        {
+            serverOptions.Limits.MaxRequestBodySize = long.MaxValue;
+        });
+        builder.Services.Configure<FormOptions>(o =>
+        {
+            o.MultipartBodyLengthLimit = long.MaxValue;
+        });
 
         // Logging
         builder.Logging.ClearProviders();
@@ -171,17 +182,6 @@ public static class ProgramPipeline
 
     public static async Task MiddlewareRegistry(this WebApplication app)
     {
-        // Static Files
-        var provider = new FileExtensionContentTypeProvider();
-
-        provider.Mappings[".m3u8"] = "application/vnd.apple.mpegurl";
-        provider.Mappings[".ts"] = "video/mp2t";
-
-        app.UseStaticFiles(new StaticFileOptions
-        {
-            ContentTypeProvider = provider
-        });
-
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
@@ -197,6 +197,24 @@ public static class ProgramPipeline
         {
             app.UseHttpsRedirection();
         }
+
+        // Static Files
+        var provider = new FileExtensionContentTypeProvider();
+
+        provider.Mappings[".m3u8"] = "application/x-mpegURL";
+        provider.Mappings[".ts"] = "video/mp2t";
+
+        string storagePath = "/storage";
+
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(storagePath),
+            RequestPath = storagePath,
+            ContentTypeProvider = provider
+        });
 
         app.UseMiddleware<ContentSecurityPolicy>();
 
@@ -215,6 +233,6 @@ public static class ProgramPipeline
     {
         app.MapControllers();
 
-        //app.MapGet("/", () => "Hello World!");
+        //app.MapGet("/", () => Results.Redirect("/index.html"));
     }
 }
