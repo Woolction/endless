@@ -6,7 +6,7 @@ namespace Infrastructure.Services;
 
 public class FfmpegService : IFfmpegService
 {
-    private const string FfmpegPath = @"C:\Program Files\ffmpeg-essentials\bin\ffmpeg.exe";
+    private const string FfmpegPath = "ffmpeg";
 
     public readonly IR2Service r2Service;
 
@@ -128,12 +128,17 @@ public class FfmpegService : IFfmpegService
 
         for (int i = 0; i < count; i++)
         {
-            maps += $"-map \"[v{variants[i]}]\" -map a ";
+            maps += $"-map \"[v{variants[i]}]\" ";
+            maps += "-map 0:a:0 ";
+
             maps += $"-c:v:{i} libx264 -preset veryfast ";
             maps += $"-b:v:{i} {GetBitrate(variants[i])} ";
+
+            maps += $"-c:a:{i} aac -b:a:{i} 128k ";
+
             maps += "-g 48 -keyint_min 48 -sc_threshold 0 ";
 
-            streamMaps.Add($"v:{i},a:0");
+            streamMaps.Add($"v:{i},a:{i}");
         }
 
         string streamMap = string.Join(" ", streamMaps);
@@ -142,7 +147,6 @@ public class FfmpegService : IFfmpegService
             $"-i \"{inputFile}\" " +
             $"-filter_complex \"{split}{filters}\" " +
             maps +
-            "-c:a aac -b:a 128k " +
             "-f hls " +
             "-hls_time 4 " +
             "-hls_playlist_type vod " +
@@ -158,7 +162,7 @@ public class FfmpegService : IFfmpegService
     {
         var psi = new ProcessStartInfo
         {
-            FileName = @"C:\ffmpeg\bin\ffprobe.exe",
+            FileName = "ffprobe",
             Arguments = $"-v error -select_streams v:0 -show_entries stream=height -of csv=p=0 \"{filePath}\"",
             RedirectStandardOutput = true,
             UseShellExecute = false
@@ -192,7 +196,7 @@ public class FfmpegService : IFfmpegService
         var error = process.StandardError.ReadToEnd();
 
         if (process.ExitCode != 0)
-            throw new Exception(error);
+            throw new Exception($"ffmpeg failed with code: {process.ExitCode}\n{process.StandardError}");
     }
 
 
@@ -211,7 +215,7 @@ public class FfmpegService : IFfmpegService
     {
         var psi = new ProcessStartInfo
         {
-            FileName = @"C:\ffmpeg\bin\ffprobe.exe",
+            FileName = "ffprobe",
             Arguments = $"-v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 \"{filePath}\"",
             RedirectStandardOutput = true,
             UseShellExecute = false
