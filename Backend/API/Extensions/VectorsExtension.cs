@@ -7,7 +7,7 @@ public static class VectorsExtension
 {
     public static UserGenreVectorDto[] GetUserGenreVectors(this UserGenreVector[] userGenres)
     {
-        UserGenreVectorDto[] userGenresVectors = new UserGenreVectorDto[userGenres.Length - 1];
+        UserGenreVectorDto[] userGenresVectors = new UserGenreVectorDto[userGenres.Length];
 
         for (int i = 0; i < userGenres.Length; i++)
         {
@@ -24,7 +24,7 @@ public static class VectorsExtension
 
     public static ContentGenreVectorDto[] GetContentGenreVectors(this ContentGenreVector[] contentGenres)
     {
-        ContentGenreVectorDto[] contentGenresVectors = new ContentGenreVectorDto[contentGenres.Length - 1];
+        ContentGenreVectorDto[] contentGenresVectors = new ContentGenreVectorDto[contentGenres.Length];
 
         for (int i = 0; i < contentGenres.Length; i++)
         {
