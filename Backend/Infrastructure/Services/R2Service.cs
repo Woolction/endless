@@ -44,9 +44,7 @@ public class R2Service : IR2Service
 
     public string SaveVideo(string folder, string keyPrefix)
     {
-        string projectRoot = Directory.GetCurrentDirectory();
-
-        string targetDir = Path.Combine(projectRoot, "files", keyPrefix);
+        string targetDir = Path.Combine("/storage", keyPrefix);
 
         Directory.CreateDirectory(targetDir);
 
@@ -61,15 +59,14 @@ public class R2Service : IR2Service
             File.Copy(file, destination, true);
         }
 
-        return $"/files/{keyPrefix}/master.m3u8";
+        return $"/storage/{keyPrefix}/master.m3u8";
     }
 
     public async Task<string> SaveImage(string file, string ext = ".jpeg")
     {
         string id = Guid.NewGuid().ToString();
 
-        string projectRoot = Directory.GetCurrentDirectory();
-        string folder = Path.Combine(projectRoot, "files", "images");
+        string folder = Path.Combine("/storage", "images");
 
         Directory.CreateDirectory(folder);
 
@@ -77,7 +74,7 @@ public class R2Service : IR2Service
 
         File.Move(file, path);
 
-        return $"/files/images/{id}{ext}";
+        return $"/storage/images/{id}{ext}";
     }
 
     public async Task<string> SaveFormFileAsync(IFormFile file, string folderName, string ext = null!)
