@@ -9,6 +9,8 @@ services:
         condition: service_healthy
       search: 
         condition: service_started
+    volumes:
+      - ./storage:/storage
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       
@@ -55,9 +57,6 @@ services:
       - ELASTICSEARCH_HOSTS=http://search:9200
     depends_on:
       - search
-
-  #cache:
-   # image: redis
   
 volumes:
   postgres-data:
