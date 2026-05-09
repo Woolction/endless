@@ -11,7 +11,7 @@ public static class ContentExtension
             content.Id, content.ChannelId, content.CreatorId,
             content.Title, content.Slug, content.Description,
             content.CreatedDate, content.ContentType.ToString(),
-            content.VideoMeta?.DurationSeconds, content.ContentUrl, content.PrewievPhotoUrl,
+            content.VideoMeta?.DurationSeconds, content.ContentUrl, content.PreviewPhotoUrl,
             0, 0, 0, 0, 0);
     }
 }

@@ -12,7 +12,7 @@ namespace Infrastructure.Repositories;
 public class ContentRepository : IContentRepository
 {
     private readonly ElasticsearchClient client;
-    
+
     private readonly string indexName;
 
     private readonly string[] synonymus;
@@ -80,7 +80,7 @@ public class ContentRepository : IContentRepository
                     .Keyword(k => k.CreatorId)
                     .Keyword(k => k.ChannelId)
                     .Keyword(k => k.ContentUrl)
-                    .Keyword(k => k.PrewievPhotoUrl)
+                    .Keyword(k => k.PreviewPhotoUrl)
                     .Keyword(l => l.Slug)
                     .Date(d => d.CreatedDate)
                     .LongNumber(l => l.ViewsCount)

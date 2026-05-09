@@ -20,7 +20,7 @@ public class ContentRecommendationHandler : IRequestHandler<ContentRecommendatio
         this.recommendation = recommendation;
         this.logger = logger;
     }
-    
+
     public async Task<Result<ContentRecoDto[]>> Handle(ContentRecommendationQuery query, CancellationToken cancellationToken)
     {
         if (!await context.Users.AsNoTracking().AnyAsync(u => u.Id == query.UserId, cancellationToken))
@@ -82,7 +82,7 @@ public class ContentRecommendationHandler : IRequestHandler<ContentRecommendatio
                 c.Title, c.Slug, c.Description,
                 c.CreatedDate, c.ContentType.ToString(), System.Random.Shared.NextDouble(),
                 c.VideoMeta == null ? 0 : c.VideoMeta.DurationSeconds, c.ContentUrl,
-                c.PrewievPhotoUrl, c.Savers.Count, c.Likers.Count, c.Comments.Count,
+                c.PreviewPhotoUrl, c.Savers.Count, c.Likers.Count, c.Comments.Count,
                 c.DisLikers.Count, c.ViewsCount))
             .OrderBy(x => x.RandomKey)
             .ToArray();

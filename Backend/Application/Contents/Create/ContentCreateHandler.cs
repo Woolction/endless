@@ -78,7 +78,7 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
             Title = cmd.Title,
             Slug = Guid.NewGuid(),
             ContentUrl = videoUrl,
-            PrewievPhotoUrl = photoUrl,
+            PreviewPhotoUrl = photoUrl,
             CreatedDate = DateTime.UtcNow,
             RandomKey = System.Random.Shared.NextDouble(),
             ContentType = cmd.ContentType
@@ -116,9 +116,9 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
             content.Id, content.ChannelId, content.CreatorId,
             content.Title, content.Slug, content.Description,
             content.CreatedDate, content.ContentType.ToString(), duration,
-            content.ContentUrl, content.PrewievPhotoUrl, 0, 0, 0, 0, 0));
+            content.ContentUrl, content.PreviewPhotoUrl, 0, 0, 0, 0, 0));
     }
-    
+
     private async Task<int> GetVideoDuration(string? videoPath)
     {
         if (videoPath != null)

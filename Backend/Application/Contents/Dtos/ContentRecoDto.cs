@@ -3,5 +3,5 @@ namespace Application.Contents.Dtos;
 public record class ContentRecoDto(
     Guid ContentId, Guid? ChannelId, Guid CreatorId, string Title,
     Guid Slug, string? Description, DateTime CreatedDate, string ContentType,
-    double RandomKey, int? DurationSeconds, string? ContentUrl, string? PrewievPhotoUrl,
+    double RandomKey, int? DurationSeconds, string? ContentUrl, string? PreviewPhotoUrl,
     long SavesCount, long LikesCount, long CommentsCount, long DisLikersCount, long ViewsCount);

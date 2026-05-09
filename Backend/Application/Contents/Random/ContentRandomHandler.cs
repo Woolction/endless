@@ -16,7 +16,7 @@ public class ContentRandomHandler : IRequestHandler<ContentRandomQuery, Result<C
         this.context = context;
         this.logger = logger;
     }
-    
+
     public async Task<Result<ContentDto[]>> Handle(ContentRandomQuery query, CancellationToken cancellationToken)
     {
         double r = System.Random.Shared.NextDouble();
@@ -30,7 +30,7 @@ public class ContentRandomHandler : IRequestHandler<ContentRandomQuery, Result<C
                 c.Id, c.ChannelId, c.CreatorId, c.Title, c.Slug, c.Description,
                 c.CreatedDate, c.ContentType.ToString(),
                 c.VideoMeta == null ? 0 : c.VideoMeta.DurationSeconds,
-                c.ContentUrl, c.PrewievPhotoUrl, c.Savers.Count, c.Likers.Count,
+                c.ContentUrl, c.PreviewPhotoUrl, c.Savers.Count, c.Likers.Count,
                 c.Comments.Count, c.DisLikers.Count, c.ViewsCount))
             .ToArrayAsync(cancellationToken);
 

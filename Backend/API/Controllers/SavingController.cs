@@ -40,7 +40,7 @@ public class SavingController : ControllerBase
                     content.Title, content.Slug, content.Description,
                     content.CreatedDate, content.ContentType.ToString(),
                     content.VideoMeta != null ? content.VideoMeta.DurationSeconds : 0,
-                    content.ContentUrl, content.PrewievPhotoUrl, content.Savers.Count,
+                    content.ContentUrl, content.PreviewPhotoUrl, content.Savers.Count,
                     content.Likers.Count, content.Comments.Count, content.DisLikers.Count,
                     content.ViewsCount)
             })

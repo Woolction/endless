@@ -19,11 +19,11 @@ public class ContentSearchIndex
     public int AverageWatchTimeSeconds { get; set; }
 
     public string? ContentUrl { get; set; }
-    public string? PrewievPhotoUrl { get; set; }
+    public string? PreviewPhotoUrl { get; set; }
 
     public long ViewsCount { get; set; }
 
-    public ContentSearchIndex() {}
+    public ContentSearchIndex() { }
 
     public ContentSearchIndex(Content content, VideoMetaData videoMeta)
     {
@@ -45,7 +45,7 @@ public class ContentSearchIndex
         }
 
         ContentUrl = content.ContentUrl;
-        PrewievPhotoUrl = content.PrewievPhotoUrl;
+        PreviewPhotoUrl = content.PreviewPhotoUrl;
 
         ViewsCount = content.ViewsCount;
     }

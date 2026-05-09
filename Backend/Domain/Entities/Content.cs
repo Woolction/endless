@@ -21,7 +21,7 @@ public class Content
     public VideoMetaData? VideoMeta { get; set; }
 
     public string? ContentUrl { get; set; }
-    public string? PrewievPhotoUrl { get; set; }
+    public string? PreviewPhotoUrl { get; set; }
 
     public long ViewsCount { get; set; }
 

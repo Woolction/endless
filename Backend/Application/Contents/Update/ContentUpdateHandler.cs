@@ -23,7 +23,7 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
         this.ffmpegService = ffmpegService;
         this.r2Service = r2Service;
     }
-    
+
     public async Task<Result<ContentDto>> Handle(ContentUpdateCommand request, CancellationToken cancellationToken)
     {
         User? user = await context.Users.FindAsync(request.UserId, cancellationToken);
@@ -73,7 +73,7 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
 
         content.c.Title = request.Title;
         content.c.ContentUrl = videoUrl;
-        content.c.PrewievPhotoUrl = photoUrl;
+        content.c.PreviewPhotoUrl = photoUrl;
         content.c.ContentType = request.ContentType;
 
         if (videoMetaData != null && videoPath != null)
@@ -94,7 +94,7 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
             content.c.Title, content.c.Slug, content.c.Description,
             content.c.CreatedDate, content.c.ContentType.ToString(),
             content.c.VideoMeta == null ? 0 : content.c.VideoMeta.DurationSeconds,
-            content.c.ContentUrl, content.c.PrewievPhotoUrl, content.SaversCount,
+            content.c.ContentUrl, content.c.PreviewPhotoUrl, content.SaversCount,
             content.LikersCount, content.CommentsCount, content.DisLikersCount,
             content.ViewsCount);
 
