@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+
+<body>
+
+    <div class="header">Watch</div>
+
+    <div class="container">
+        <video id="video" controls width="900" height="600"></video>
+        <select id="quality" onchange="changeQuality()">
+            <option value="-1">Auto</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <input id="contentId" placeholder="ContentId">
+        <button onclick="loadVideo()">Upload</button>
+        <button onclick="sendInteraction()">CreateInteraction</button>
+    </div>
+
+    <script>
+        let watchTimeSeconds = 0;
+        let interval = null;
+        let hls;
+
+        async function loadVideo() {
+            const urlParams = new URLSearchParams(window.location.search)
+
+            let id = urlParams.get("id"); 
+
+            if (!id) 
+            {
+                id = document.getElementById("contentId").value;
+            }
+
+            const response = await fetch(`/api/content/${id}`);
+
+            if (!response.ok) {
+                console.error("Video not found");
+
+                return;
+            }
+
+            const data = await response.json();
+
+            const videoUrl = data.contentUrl;
+
+            const video = document.getElementById("video");
+
+            video.addEventListener("play", () => {
+
+                interval = setInterval(() => {
+                    watchTimeSeconds++;
+                }, 1000);
+            });
+
+            video.addEventListener("pause", () => {
+
+                clearInterval(interval);
+            });
+
+            video.addEventListener("ended", () => {
+
+                clearInterval(interval);
+            });
+
+            if (Hls.isSupported()) {
+
+                hls = new Hls();
+
+                hls.loadSource(videoUrl);
+
+                hls.attachMedia(video);
+
+                hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    const quality = document.getElementById("quality");
+
+                    quality.innerHTML =
+                        `<option value="-1">Auto</option>`;
+
+                    hls.levels.forEach((level, index) => {
+                        quality.innerHTML +=
+                            `<option value="${index}">
+                                ${level.height}p
+                            </option>`;
+                    });
+                });
+            }
+            else {
+                video.src = videoUrl;
+            }
+        }
+
+        function changeQuality() {
+            const quality = document.getElementById("quality").value;
+
+            hls.currentLevel = parseInt(quality);
+        }
+
+        async function sendInteraction() {
+            const id = document.getElementById("contentId").value;
+
+            if (!id)
+                return;
+
+            await fetch(`/api/userinteraction/content/${id}`, {
+                credentials: "include",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    watchTimeSeconds
+                })
+            });
+        }
+
+        window.addEventListener("beforeunload", sendInteraction);
+
+        loadVideo();
+    </script>
+
+</body>
+
+</html>
