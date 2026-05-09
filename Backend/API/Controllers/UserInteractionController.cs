@@ -8,6 +8,7 @@ using Domain.Entities;
 using API.Extensions;
 using Application.Utilities;
 using Application.Genres.Dtos;
+using Application.Genres.UserInteraction;
 
 namespace API.Controllers;
 
@@ -30,7 +31,7 @@ public class UserInteractionController : ControllerBase
 
     [HttpPost("content/{ContentId}")]
     [Authorize(Policy = nameof(UserRole.User))]
-    public async Task<ActionResult<GenreVectorsDto>> CreateInteractionForContent(Guid ContentId, int watchTimeSeconds)
+    public async Task<ActionResult<GenreVectorsDto>> CreateInteractionForContent([FromRoute] Guid ContentId, [FromBody] WatchTimeCommand command)
     {
         Guid currentUserId = this.GetIDFromClaim();
 
@@ -42,9 +43,10 @@ public class UserInteractionController : ControllerBase
         if (currentUser == null || content == null || content.VideoMeta == null)
             return NotFound("User or Content or Meta not found");
 
-        UserInteractionContent? userInteraction = await context.UserInteractionContents.FindAsync(currentUserId);
+        UserInteractionContent? userInteraction = await context.UserInteractionContents
+            .FindAsync(currentUserId, ContentId);
 
-        if (userInteraction is null)
+        if (userInteraction == null)
         {
             userInteraction = new()
             {
@@ -63,7 +65,7 @@ public class UserInteractionController : ControllerBase
             .AsNoTracking()
             .AnyAsync(s => s.UserId == currentUserId && s.ContentId == content.Id);
 
-        userInteraction.WatchTimeSeconds = watchTimeSeconds;
+        userInteraction.WatchTimeSeconds = command.WatchTimeSeconds;
 
         await context.SaveChangesAsync();
 
