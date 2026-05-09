@@ -40,7 +40,7 @@ public class ContentController : ControllerBase
 
     [HttpPost("Channel/{ChannelId}")]
     [Authorize(Policy = nameof(UserRole.Creator))]
-    public async Task<ActionResult<ContentDto>> CreateContent(Guid ChannelId, ContentCreateRequest request)
+    public async Task<ActionResult<ContentDto>> CreateContent([FromRoute] Guid ChannelId, [FromForm] ContentCreateRequest request)
     {
         ContentCreateCommand cmd = new(
             this.GetIDFromClaim(), ChannelId,
@@ -93,7 +93,7 @@ public class ContentController : ControllerBase
         return Created($"api/content/{result.Data!.ContentId}", result.Data);
     }
 
-    [HttpGet("{ContentId}")]
+    [HttpGet("changed/{ContentId}")]
     public async Task<ActionResult<ChangedContentDto>> GetChangedContent(Guid ContentId)
     {
         ContentChooseQuery contentQuery = new(ContentId);
@@ -122,7 +122,7 @@ public class ContentController : ControllerBase
             };
         }
 
-        Result<ChannelDto> resultChannel = new(); 
+        Result<ChannelDto> resultChannel = new();
 
         if (resultContent.Data.ChannelId != null)
         {
@@ -142,6 +142,26 @@ public class ContentController : ControllerBase
 
         return Ok(new ChangedContentDto(
             resultChannel.Data, resultContent.Data, resultUser.Data));
+    }
+
+    [HttpGet("{ContentId}")]
+    public async Task<ActionResult<ContentUrlDto>> GetContentUrlById(Guid ContentId)
+    {
+        Result<ContentDto> result = await mediator.Send(new ContentChooseQuery(ContentId));
+
+        if (!result.IsSuccess || result.Data == null)
+        {
+            return result.StatusCode switch
+            {
+                404 => NotFound(result.Error),
+                _ => StatusCode(500, "unknown error")
+            };
+        }
+
+        if (result.Data.ContentUrl == null)
+            return NoContent();
+
+        return Ok(new ContentUrlDto(result.Data.ContentUrl));
     }
 
     [HttpGet]
