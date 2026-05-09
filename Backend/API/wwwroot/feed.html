@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="header">Recommendations</div>
+
+    <div class="container">
+        <button onclick="load()">Load</button>
+        <div class="grid" id="grid"></div>
+    </div>
+
+    <script>
+        async function load() {
+            const res = await fetch("/api/content/Recommendations", {
+                credentials: "include"
+            });
+
+            const data = await res.json();
+
+            const grid = document.getElementById("grid");
+            grid.innerHTML = "";
+
+            data.forEach(v => {
+                const el = document.createElement("div");
+                el.className = "card";
+                el.innerHTML = 
+                    `<div class="card-title">${v.title}
+                        <img src="${v.previewPhotoUrl}"/>
+                    </div>`
+
+                el.onclick = () => {
+                    location.href = `/watch.html?id=${v.contentId}`
+                };
+
+                grid.appendChild(el); 
+            });
+        }
+    </script>
+
+</body>
+
+</html>
