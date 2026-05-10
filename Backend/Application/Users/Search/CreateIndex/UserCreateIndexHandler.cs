@@ -1,10 +1,7 @@
-using Elastic.Clients.Elasticsearch.Analysis;
+using Domain.Common.Interfaces.Repositories;
 using Elastic.Clients.Elasticsearch;
 using Application.Searchs;
-using Domain.Rows.Users;
 using MediatR;
-using System.Runtime.CompilerServices;
-using Domain.Interfaces.Repositories;
 
 namespace Application.Users.Search.CreateIndex;
 
@@ -20,7 +17,7 @@ public class UserCreateIndexHandler : IRequestHandler<UserCreateIndexCommand, Re
     {
         var response = await userRepository.CreateMapping(cancellationToken);
 
-       
+
 
         if (!response.IsValidResponse || !response.IsSuccess())
             return Result<IndexCreatedDto>.Failure(500, response.DebugInformation);

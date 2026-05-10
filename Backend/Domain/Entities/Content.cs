@@ -1,4 +1,4 @@
-using Domain.Common;
+using Domain.Common.Enums;
 
 namespace Domain.Entities;
 
@@ -17,6 +17,7 @@ public class Content
     public string? Description { get; set; }
     public DateTime CreatedDate { get; set; }
     public ContentType ContentType { get; set; } = ContentType.Video;
+    public ContentStatusType StatusType { get; set; } = ContentStatusType.None;
 
     public VideoMetaData? VideoMeta { get; set; }
 

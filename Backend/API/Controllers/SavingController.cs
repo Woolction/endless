@@ -1,11 +1,11 @@
-using Application.Contents.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Domain.Common;
+using Domain.Common.Interfaces.Db;
+using Application.Contents.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Infrastructure.Context;
-using Domain.Entities;
 using Application.Utilities;
+using Domain.Common.Enums;
+using Domain.Entities;
 
 namespace API.Controllers;
 
@@ -13,11 +13,11 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class SavingController : ControllerBase
 {
-    private readonly EndlessContext context;
+    private readonly IAppDbContext context;
 
     private readonly ILogger<SavingController> logger;
 
-    public SavingController(EndlessContext context, ILogger<SavingController> logger)
+    public SavingController(IAppDbContext context, ILogger<SavingController> logger)
     {
         this.context = context;
 

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.RateLimiting;
+using Application.Authentications.Update;
 using Application.Users.Create.Registry;
+using Application.Authentications.Dtos;
 using Application.Users.Create.Many;
 using Application.Users.Search;
 using Application.Users.Update;
@@ -9,11 +10,9 @@ using Application.Users.Delete;
 using Microsoft.AspNetCore.Mvc;
 using Application.Users.Dtos;
 using Application.Utilities;
-using Domain.Common;
+using Domain.Common.Enums;
 using Application;
 using MediatR;
-using Application.Authentications.Dtos;
-using Application.Authentications.Update;
 
 namespace API.Controllers;
 
@@ -93,7 +92,7 @@ public class UsersController : ControllerBase
     [HttpGet("Count/{UserId}")]
     public async Task<ActionResult<UserDto>> GetUserCounts(Guid UserId)
     {
-        return null;
+        return default;
     }
 
     [HttpGet("{UserId}")]

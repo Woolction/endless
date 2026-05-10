@@ -1,9 +1,10 @@
-using Domain.Interfaces.Repositories;
+using Domain.Common.Interfaces.Repositories;
 using Elastic.Clients.Elasticsearch;
 using Microsoft.Extensions.Logging;
 using Application.Contents.Dtos;
 using Domain.Rows.Contents;
 using MediatR;
+using Application.Contents.Create;
 
 namespace Application.Contents.Search;
 

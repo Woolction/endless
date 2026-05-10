@@ -1,11 +1,11 @@
-using Application.Channels.Dtos;
-using Application.Utilities;
-using Domain.Common;
-using Domain.Entities;
-using Domain.Interfaces;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Application.Channels.Dtos;
+using Application.Utilities;
+using Domain.Common.Interfaces.Db;
+using Domain.Entities;
+using Domain.Common.Enums;
+using MediatR;
 using Npgsql;
 
 namespace Application.Channels.Update;
@@ -20,15 +20,17 @@ public class ChannelUpdateHandler : IRequestHandler<ChannelUpdateCommand, Result
         this.context = context;
         this.logger = logger;
     }
-    
+
     public async Task<Result<ChannelDto>> Handle(ChannelUpdateCommand cmd, CancellationToken cancellationToken)
     {
         var channel = await context.Channels
-            .Select(channel => new {
+            .Select(channel => new
+            {
                 d = channel,
                 SubscribersCount = channel.Subscribers.Count,
                 ContentsCount = channel.Contents.Count,
-                OwnersCount = channel.Owners.Count})
+                OwnersCount = channel.Owners.Count
+            })
             .FirstOrDefaultAsync(
                 channel => channel.d.Id == cmd.ChannelId,
                 cancellationToken);

@@ -1,12 +1,12 @@
-using Application.Contents.Dtos;
-using Application.Comments.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Domain.Common;
+using Domain.Common.Interfaces.Db;
+using Application.Contents.Dtos;
+using Application.Comments.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Infrastructure.Context;
-using Domain.Entities;
 using Application.Utilities;
+using Domain.Common.Enums;
+using Domain.Entities;
 
 namespace API.Controllers;
 
@@ -14,11 +14,11 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class DisLikingController : ControllerBase
 {
-    private readonly EndlessContext context;
+    private readonly IAppDbContext context;
 
     private readonly ILogger<DisLikingController> logger;
 
-    public DisLikingController(EndlessContext context, ILogger<DisLikingController> logger)
+    public DisLikingController(IAppDbContext context, ILogger<DisLikingController> logger)
     {
         this.context = context;
 

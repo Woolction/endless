@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Domain.Interfaces.Repositories;
+namespace Domain.Common.Interfaces.Repositories;
 
 public interface IUserVectorsRepository
 {

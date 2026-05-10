@@ -1,13 +1,13 @@
+using Domain.Common.Interfaces.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Domain.Interfaces.Services;
+using Domain.Common.Interfaces.Services;
 using Application.Utilities;
-using Domain.Interfaces;
+using Domain.Common.Interfaces.Db;
 using Domain.Entities;
 using MediatR;
 using Npgsql;
-using Domain.Interfaces.Repositories;
 
 namespace Application.Users.Create.Registry;
 

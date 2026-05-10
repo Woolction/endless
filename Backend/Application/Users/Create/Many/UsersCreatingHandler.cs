@@ -1,14 +1,11 @@
-using Application.Users.Create.Many;
-using Application.Users.Dtos;
-using Application.Utilities;
-using Domain.Entities;
-using Domain.Interfaces;
-using Domain.Interfaces.Repositories;
-using Elastic.Clients.Elasticsearch;
-using MediatR;
+using Domain.Common.Interfaces.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Application.Users.Dtos;
+using Application.Utilities;
+using Domain.Common.Interfaces.Db;
+using Domain.Entities;
+using MediatR;
 using Npgsql;
 
 namespace Application.Users.Create.Many;

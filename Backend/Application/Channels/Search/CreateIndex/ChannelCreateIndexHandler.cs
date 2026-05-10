@@ -1,7 +1,6 @@
-using Application.Searchs;
-using Domain.Interfaces.Repositories;
-using Domain.Rows.Channels;
+using Domain.Common.Interfaces.Repositories;
 using Elastic.Clients.Elasticsearch;
+using Application.Searchs;
 using MediatR;
 
 namespace Application.Channels.Search.CreateIndex;

@@ -1,10 +1,10 @@
-using Application.Contents.Dtos;
-using Domain.Entities;
-using Domain.Interfaces;
-using Domain.Interfaces.Services;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Domain.Common.Interfaces.Services;
+using Application.Contents.Dtos;
+using Domain.Common.Interfaces.Db;
+using Domain.Entities;
+using MediatR;
 
 namespace Application.Contents.Recommendate;
 

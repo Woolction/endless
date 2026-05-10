@@ -1,4 +1,4 @@
-using Domain.Interfaces.Services;
+using Domain.Common.Interfaces.Services;
 using Amazon.S3.Transfer;
 using Amazon.S3;
 using Microsoft.AspNetCore.Http;

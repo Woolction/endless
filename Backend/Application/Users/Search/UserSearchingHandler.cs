@@ -1,10 +1,9 @@
-using Domain.Interfaces.Repositories;
-using Application.Searchs;
-using Application.Users.Dtos;
-using MediatR;
-using Domain.Rows.Users;
-using Microsoft.Extensions.Logging;
+using Domain.Common.Interfaces.Repositories;
 using Elastic.Clients.Elasticsearch;
+using Microsoft.Extensions.Logging;
+using Application.Users.Dtos;
+using Domain.Rows.Users;
+using MediatR;
 
 namespace Application.Users.Search;
 
@@ -25,7 +24,7 @@ public class UserSearchingHandler : IRequestHandler<UserSearchQuery, Result<Sear
 
         if (query.LastScore != null)
             lastValue.Add(FieldValue.Double(
-                query.LastScore.Value)); 
+                query.LastScore.Value));
 
         UserSearchRow result = await userRepository.SearchUsersByName(
             query.Name, lastValue, cancellationToken);
@@ -36,9 +35,9 @@ public class UserSearchingHandler : IRequestHandler<UserSearchQuery, Result<Sear
         SearchedUserDto[] userDtos = result.SearchedUsers.Select(u => new SearchedUserDto(new UserDto(
             u.SearchedUser.UserId, u.SearchedUser.Name, "@" + u.SearchedUser.Slug, u.SearchedUser.Description,
             u.SearchedUser.RegistryData, u.SearchedUser.Email, u.SearchedUser.Role.ToString(),
-            u.SearchedUser.AvatarPhotoUrl, u.SearchedUser.TotalLikes, 0, 0, 0, 0, 0, 0 
-            /*u.CommentsCount, u.ContentsCount, u.FollowersCount, u.FollowingCount,
-            u.OwnedChannelsCount, u.ChannelSubscriptionsCount*/
+            u.SearchedUser.AvatarPhotoUrl, u.SearchedUser.TotalLikes, 0, 0, 0, 0, 0, 0
+        /*u.CommentsCount, u.ContentsCount, u.FollowersCount, u.FollowingCount,
+        u.OwnedChannelsCount, u.ChannelSubscriptionsCount*/
         ), u.Score)).ToArray();
 
         logger.LogInformation("Search returned users: {Count} results for {Query}",

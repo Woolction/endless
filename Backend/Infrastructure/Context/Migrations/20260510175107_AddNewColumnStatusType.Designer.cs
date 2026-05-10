@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Context.Migrations
 {
     [DbContext(typeof(EndlessContext))]
-    [Migration("20260417175041_ParentAndCommentsForComment")]
-    partial class ParentAndCommentsForComment
+    [Migration("20260510175107_AddNewColumnStatusType")]
+    partial class AddNewColumnStatusType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,7 +174,7 @@ namespace Infrastructure.Context.Migrations
                     b.Property<bool>("IsWound")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("PrewievPhotoUrl")
+                    b.Property<string>("PreviewPhotoUrl")
                         .HasColumnType("text");
 
                     b.Property<double>("RandomKey")
@@ -182,6 +182,9 @@ namespace Infrastructure.Context.Migrations
 
                     b.Property<Guid>("Slug")
                         .HasColumnType("uuid");
+
+                    b.Property<byte>("StatusType")
+                        .HasColumnType("smallint");
 
                     b.Property<string>("Title")
                         .IsRequired()

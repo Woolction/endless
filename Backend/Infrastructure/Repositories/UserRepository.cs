@@ -1,4 +1,4 @@
-using Domain.Interfaces.Repositories;
+using Domain.Common.Interfaces.Repositories;
 using Elastic.Clients.Elasticsearch;
 using Domain.Rows.Users;
 using Domain.Entities;
@@ -111,15 +111,16 @@ public class UserRepository : IUserRepository
         var search = new SearchRequestDescriptor<UserSearchIndex>()
             .Indices(indexName)
             .Query(q => q
-                .MultiMatch(m => {
+                .MultiMatch(m =>
+                {
                     m.Query(name)
                     .Fields(value)
                     .MinimumShouldMatch(1)
                     .Type(TextQueryType.BestFields);
-                    
+
                     if (name.Length >= 3)
                         m.Fuzziness("AUTO");
-                    }))
+                }))
             .Size(20)
             .Sort(s => s
                 .Score(s => s.Order(SortOrder.Desc)))
@@ -134,7 +135,8 @@ public class UserRepository : IUserRepository
             return new UserSearchRow();
 
         List<UserSearchIndexRow> searchedUsers = result.Hits
-            .Select(h => {
+            .Select(h =>
+            {
                 Console.WriteLine($"User: {h.Id} - {h.Score}");
 
                 return new UserSearchIndexRow()

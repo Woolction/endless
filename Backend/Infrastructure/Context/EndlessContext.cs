@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Domain.Interfaces;
+using Domain.Common.Interfaces.Db;
 using Domain.Entities;
 
 namespace Infrastructure.Context;

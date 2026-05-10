@@ -1,10 +1,10 @@
-using Application.Genres.CreateMany;
-using Application.Genres.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Domain.Common;
-using Infrastructure.Context;
+using Application.Genres.CreateMany;
+using Domain.Common.Interfaces.Db;
 using Microsoft.AspNetCore.Mvc;
+using Application.Genres.Dtos;
+using Domain.Common.Enums;
 using Domain.Entities;
 using API.Extensions;
 
@@ -14,11 +14,11 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class GenreVectorsController : ControllerBase
 {
-    private readonly EndlessContext context;
+    private readonly IAppDbContext context;
 
     private readonly ILogger<GenreVectorsController> logger;
 
-    public GenreVectorsController(EndlessContext context, ILogger<GenreVectorsController> logger)
+    public GenreVectorsController(IAppDbContext context, ILogger<GenreVectorsController> logger)
     {
         this.context = context;
 

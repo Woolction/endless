@@ -1,4 +1,3 @@
-using Elastic.Clients.Elasticsearch;
 using MediatR;
 
 namespace Application.Users.Search;

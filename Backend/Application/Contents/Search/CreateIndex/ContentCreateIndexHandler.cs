@@ -1,8 +1,7 @@
+using Domain.Common.Interfaces.Repositories;
 using Elastic.Clients.Elasticsearch;
-using Domain.Rows.Contents;
 using Application.Searchs;
 using MediatR;
-using Domain.Interfaces.Repositories;
 
 namespace Application.Contents.Search.CreateIndex;
 

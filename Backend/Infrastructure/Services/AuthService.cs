@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Configuration;
+using Domain.Common.Interfaces.Services;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
-using Domain.Interfaces.Services;
+using Domain.Common.Interfaces.Db;
 using System.Security.Claims;
-using Infrastructure.Context;
 using Domain.Entities;
 using System.Text;
 
@@ -12,14 +12,14 @@ namespace Infrastructure.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly EndlessContext context;
+    private readonly IAppDbContext context;
 
     private readonly IConfiguration jwtSettings;
     private readonly SymmetricSecurityKey securetyKey;
 
     private const int refreshTokenExpires = 30;
 
-    public AuthService(EndlessContext context, IConfiguration configuration)
+    public AuthService(IAppDbContext context, IConfiguration configuration)
     {
         this.context = context;
 

@@ -1,9 +1,9 @@
-using Domain.Entities;
-using Domain.Interfaces;
-using MediatR;
-using Microsoft.Extensions.Logging;
+using Domain.Common.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Domain.Interfaces.Repositories;
+using Microsoft.Extensions.Logging;
+using Domain.Common.Interfaces.Db;
+using Domain.Entities;
+using MediatR;
 
 namespace Application.Contents.Delete;
 
@@ -18,7 +18,7 @@ public class ContentDeleteHandler : IRequestHandler<ContentDeleteCommand, Result
         this.context = context;
         this.logger = logger;
     }
-    
+
     public async Task<Result<Null>> Handle(ContentDeleteCommand cmd, CancellationToken cancellationToken)
     {
         User? user = await context.Users.FindAsync(

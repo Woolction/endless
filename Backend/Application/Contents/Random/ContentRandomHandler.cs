@@ -1,8 +1,8 @@
-using Application.Contents.Dtos;
-using Domain.Interfaces;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Application.Contents.Dtos;
+using Domain.Common.Interfaces.Db;
+using MediatR;
 
 namespace Application.Contents.Random;
 

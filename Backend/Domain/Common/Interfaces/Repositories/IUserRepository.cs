@@ -3,7 +3,7 @@ using Elastic.Clients.Elasticsearch;
 using Domain.Rows.Users;
 using Domain.Entities;
 
-namespace Domain.Interfaces.Repositories;
+namespace Domain.Common.Interfaces.Repositories;
 
 public interface IUserRepository
 {

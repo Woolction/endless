@@ -1,12 +1,12 @@
-using Application.Contents.Dtos;
-using Application.Comments.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Domain.Common;
-using Infrastructure.Context;
+using Domain.Common.Interfaces.Db;
+using Application.Contents.Dtos;
+using Application.Comments.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Entities;
 using Application.Utilities;
+using Domain.Common.Enums;
+using Domain.Entities;
 
 namespace API.Controllers;
 
@@ -14,11 +14,11 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class LikingController : ControllerBase
 {
-    private readonly EndlessContext context;
+    private readonly IAppDbContext context;
 
     private readonly ILogger<LikingController> logger;
 
-    public LikingController(EndlessContext context, ILogger<LikingController> logger)
+    public LikingController(IAppDbContext context, ILogger<LikingController> logger)
     {
         this.context = context;
 

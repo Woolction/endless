@@ -1,13 +1,13 @@
-using Application.Comments.Create;
 using Microsoft.AspNetCore.Authorization;
-using Application.Comments.Dtos;
-using Application.Utilities;
-using Application.Users.Dtos;
-using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using Domain.Common;
-using Domain.Entities;
+using Domain.Common.Interfaces.Db;
+using Application.Comments.Create;
+using Application.Comments.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Application.Users.Dtos;
+using Application.Utilities;
+using Domain.Common.Enums;
+using Domain.Entities;
 using API.Extensions;
 
 namespace API.Controllers;
@@ -16,11 +16,11 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class CommentController : ControllerBase
 {
-    private readonly EndlessContext context;
+    private readonly IAppDbContext context;
 
     private readonly ILogger<CommentController> logger;
 
-    public CommentController(EndlessContext context, ILogger<CommentController> logger)
+    public CommentController(IAppDbContext context, ILogger<CommentController> logger)
     {
         this.context = context;
 

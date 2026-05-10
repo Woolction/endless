@@ -1,7 +1,7 @@
-using Application.Users.Dtos;
-using Domain.Common;
-using MediatR;
 using Microsoft.AspNetCore.Http;
+using Application.Users.Dtos;
+using Domain.Common.Enums;
+using MediatR;
 
 namespace Application.Users.Update;
 

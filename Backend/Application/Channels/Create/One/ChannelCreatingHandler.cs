@@ -1,13 +1,13 @@
-using Application.Channels.Dtos;
-using Application.Utilities;
-using Domain.Common;
-using Domain.Entities;
-using Domain.Interfaces;
-using Domain.Interfaces.Repositories;
-using Domain.Interfaces.Services;
-using MediatR;
+using Domain.Common.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Domain.Common.Interfaces.Services;
+using Application.Channels.Dtos;
+using Application.Utilities;
+using Domain.Common.Interfaces.Db;
+using Domain.Entities;
+using Domain.Common.Enums;
+using MediatR;
 using Npgsql;
 
 namespace Application.Channels.Create.One;

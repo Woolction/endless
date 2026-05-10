@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
-using Application.Users.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Domain.Common;
+using Domain.Common.Interfaces.Db;
 using Microsoft.AspNetCore.Mvc;
-using Infrastructure.Context;
-using Domain.Entities;
+using Application.Users.Dtos;
 using Application.Utilities;
+using Domain.Common.Enums;
+using Domain.Entities;
 
 namespace API.Controllers;
 
@@ -13,11 +13,11 @@ namespace API.Controllers;
 [Route("api/[controller]/user")]
 public class FollowController : ControllerBase
 {
-    private readonly EndlessContext context;
+    private readonly IAppDbContext context;
 
     private readonly ILogger<FollowController> logger;
 
-    public FollowController(EndlessContext context, ILogger<FollowController> logger)
+    public FollowController(IAppDbContext context, ILogger<FollowController> logger)
     {
         this.context = context;
 

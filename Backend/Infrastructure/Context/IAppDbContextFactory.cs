@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Context;
 
-public class EndlessContextFactory : IDesignTimeDbContextFactory<EndlessContext>
+public class IAppDbContextFactory : IDesignTimeDbContextFactory<EndlessContext>
 {
     public EndlessContext CreateDbContext(string[] args)
     {

@@ -1,10 +1,10 @@
-using Application.Users.Dtos;
-using Application.Utilities;
-using Domain.Interfaces;
-using Domain.Interfaces.Services;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Domain.Common.Interfaces.Services;
+using Application.Users.Dtos;
+using Application.Utilities;
+using Domain.Common.Interfaces.Db;
+using MediatR;
 using Npgsql;
 
 namespace Application.Users.Update;
@@ -24,7 +24,7 @@ public class UserUpdateHandler : IRequestHandler<UserUpdateCommand, Result<UserD
         this.ffmpegService = ffmpegService;
         this.r2Service = r2Service;
     }
-    
+
     public async Task<Result<UserDto>> Handle(UserUpdateCommand cmd, CancellationToken cancellationToken)
     {
         var user = await context.Users

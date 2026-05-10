@@ -1,8 +1,8 @@
-using Application.Users.Dtos;
-using Domain.Interfaces;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Application.Users.Dtos;
+using Domain.Common.Interfaces.Db;
+using MediatR;
 
 namespace Application.Users.Choose;
 

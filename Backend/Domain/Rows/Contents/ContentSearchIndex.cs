@@ -37,7 +37,7 @@ public class ContentSearchIndex
         CreatedDate = content.CreatedDate;
         ContentType = (int)content.ContentType;
 
-        if (content.ContentType == Common.ContentType.Video)
+        if (content.ContentType == Common.Enums.ContentType.Video)
         {
             DurationSeconds = videoMeta.DurationSeconds;
             AverageWatchRatio = videoMeta.AverageWatchRatio;

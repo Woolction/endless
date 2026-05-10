@@ -1,10 +1,9 @@
 using Application.Authentications.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Domain.Interfaces.Services;
-using Domain.Interfaces;
+using Domain.Common.Interfaces.Services;
+using Domain.Common.Interfaces.Db;
 using Domain.Entities;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace Application.Authentications.Update;
 

@@ -1,11 +1,11 @@
+using Domain.Common.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Application.Channels.Dtos;
 using Application.Utilities;
-using Domain.Common;
+using Domain.Common.Interfaces.Db;
 using Domain.Entities;
-using Domain.Interfaces;
-using Domain.Interfaces.Repositories;
+using Domain.Common.Enums;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
 namespace Application.Channels.Create.Many;

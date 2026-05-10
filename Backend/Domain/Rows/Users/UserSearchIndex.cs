@@ -1,4 +1,4 @@
-using Domain.Common;
+using Domain.Common.Enums;
 using Domain.Entities;
 
 namespace Domain.Rows.Users;
@@ -16,7 +16,7 @@ public class UserSearchIndex
     public DateTime RegistryData;
     public int Role;
 
-    public UserSearchIndex() {}
+    public UserSearchIndex() { }
 
     public UserSearchIndex(User user)
     {

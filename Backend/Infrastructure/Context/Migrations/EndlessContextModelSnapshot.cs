@@ -180,6 +180,9 @@ namespace Infrastructure.Context.Migrations
                     b.Property<Guid>("Slug")
                         .HasColumnType("uuid");
 
+                    b.Property<byte>("StatusType")
+                        .HasColumnType("smallint");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
@@ -738,7 +741,7 @@ namespace Infrastructure.Context.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.OwnsOne("Domain.Common.RefreshToken", "RefreshToken", b1 =>
+                    b.OwnsOne("Domain.Common.Enums.RefreshToken", "RefreshToken", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uuid");

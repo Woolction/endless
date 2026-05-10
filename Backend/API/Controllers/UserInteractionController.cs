@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
-using Domain.Interfaces.Services;
+using Application.Genres.UserInteraction;
+using Domain.Common.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
-using Domain.Common;
-using Infrastructure.Context;
+using Domain.Common.Interfaces.Db;
 using Microsoft.AspNetCore.Mvc;
+using Application.Genres.Dtos;
+using Application.Utilities;
+using Domain.Common.Enums;
 using Domain.Entities;
 using API.Extensions;
-using Application.Utilities;
-using Application.Genres.Dtos;
-using Application.Genres.UserInteraction;
 
 namespace API.Controllers;
 
@@ -16,12 +16,12 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class UserInteractionController : ControllerBase
 {
-    private readonly EndlessContext context;
+    private readonly IAppDbContext context;
 
     private readonly ILogger<UserInteractionController> logger;
     private readonly IInteractionService interaction;
 
-    public UserInteractionController(EndlessContext context, ILogger<UserInteractionController> logger, IInteractionService interaction)
+    public UserInteractionController(IAppDbContext context, ILogger<UserInteractionController> logger, IInteractionService interaction)
     {
         this.context = context;
 

@@ -1,7 +1,7 @@
 using Elastic.Clients.Elasticsearch.IndexManagement;
 using Elastic.Clients.Elasticsearch.Analysis;
 using Elastic.Clients.Elasticsearch.QueryDsl;
-using Domain.Interfaces.Repositories;
+using Domain.Common.Interfaces.Repositories;
 using Elastic.Clients.Elasticsearch;
 using Domain.Rows.Channels;
 using Domain.Entities;
@@ -113,7 +113,8 @@ public class ChannelRepository : IChannelRepository
         var search = new SearchRequestDescriptor<ChannelSearchIndex>()
             .Indices(indexName)
             .Query(q => q
-                .MultiMatch(m => {
+                .MultiMatch(m =>
+                {
                     m.Query(name)
                     .Fields(value)
                     .MinimumShouldMatch(1)
@@ -121,7 +122,7 @@ public class ChannelRepository : IChannelRepository
 
                     if (name.Length >= 3)
                         m.Fuzziness("AUTO");
-                    }))
+                }))
             .Size(20)
             .Sort(s => s
                 .Score(s => s.Order(SortOrder.Desc)))

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Context.Migrations
 {
     [DbContext(typeof(EndlessContext))]
-    [Migration("20260417175041_ParentAndCommentsForComment")]
-    partial class ParentAndCommentsForComment
+    [Migration("20260510174854_RenameConfidencityColumn")]
+    partial class RenameConfidencityColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,7 +174,7 @@ namespace Infrastructure.Context.Migrations
                     b.Property<bool>("IsWound")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("PrewievPhotoUrl")
+                    b.Property<string>("PreviewPhotoUrl")
                         .HasColumnType("text");
 
                     b.Property<double>("RandomKey")

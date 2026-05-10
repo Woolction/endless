@@ -1,6 +1,4 @@
 using Application.Channels.Dtos;
-using Application.Searchs;
-using MediatR;
 
 namespace Application.Channels.Search;
 

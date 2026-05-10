@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Domain.Interfaces.Services;
+namespace Domain.Common.Interfaces.Services;
 
 public interface IR2Service
 {

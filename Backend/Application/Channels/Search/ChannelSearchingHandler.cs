@@ -1,10 +1,9 @@
-using Application.Searchs;
-using Application.Channels.Dtos;
-using Domain.Interfaces.Repositories;
-using MediatR;
-using Domain.Rows.Channels;
-using Microsoft.Extensions.Logging;
+using Domain.Common.Interfaces.Repositories;
 using Elastic.Clients.Elasticsearch;
+using Microsoft.Extensions.Logging;
+using Application.Channels.Dtos;
+using Domain.Rows.Channels;
+using MediatR;
 
 namespace Application.Channels.Search;
 

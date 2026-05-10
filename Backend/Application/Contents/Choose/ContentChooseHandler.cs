@@ -1,10 +1,8 @@
-using Application.Channels.Dtos;
-using Application.Contents.Dtos;
-using Application.Users.Dtos;
-using Domain.Interfaces;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Application.Contents.Dtos;
+using Domain.Common.Interfaces.Db;
+using MediatR;
 
 namespace Application.Contents.Choose;
 

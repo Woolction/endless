@@ -1,3 +1,4 @@
+using Domain.Common.Enums;
 using Domain.Common;
 
 namespace Domain.Entities;
@@ -15,7 +16,7 @@ public class User
     public DateTime DateOfBirth { get; set; }
     public DateTime RegistryData { get; set; }
 
-    public PrivateType PrivateType { get; set; } = PrivateType.Request;
+    public UserConfidentialityType PrivateType { get; set; } = UserConfidentialityType.Request;
     public UserRole Role { get; set; } = UserRole.User;
 
     public string? AvatarPhotoUrl { get; set; }

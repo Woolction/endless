@@ -1,11 +1,11 @@
-using Application.Channels.Update;
-using Domain.Entities;
-using Domain.Interfaces;
-using MediatR;
-using Microsoft.Extensions.Logging;
+using Domain.Common.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Domain.Common;
-using Domain.Interfaces.Repositories;
+using Microsoft.Extensions.Logging;
+using Application.Channels.Update;
+using Domain.Common.Interfaces.Db;
+using Domain.Entities;
+using Domain.Common.Enums;
+using MediatR;
 
 namespace Application.Channels.Delete;
 
@@ -21,7 +21,7 @@ public class ChannelDeleteHandler : IRequestHandler<ChannelDeleteCommand, Result
         this.context = context;
         this.logger = logger;
     }
-    
+
     public async Task<Result<Null>> Handle(ChannelDeleteCommand cmd, CancellationToken cancellationToken)
     {
         ChannelOwner? currentOwner = await context.ChannelOwners

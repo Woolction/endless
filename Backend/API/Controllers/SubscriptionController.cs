@@ -1,11 +1,11 @@
-using Application.Channels.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Domain.Common;
+using Domain.Common.Interfaces.Db;
+using Application.Channels.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Infrastructure.Context;
-using Domain.Entities;
 using Application.Utilities;
+using Domain.Common.Enums;
+using Domain.Entities;
 
 namespace API.Controllers;
 
@@ -13,11 +13,11 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class SubscriptionController : ControllerBase
 {
-    private readonly EndlessContext context;
+    private readonly IAppDbContext context;
 
     private readonly ILogger<SubscriptionController> logger;
 
-    public SubscriptionController(EndlessContext context, ILogger<SubscriptionController> logger)
+    public SubscriptionController(IAppDbContext context, ILogger<SubscriptionController> logger)
     {
         this.context = context;
 

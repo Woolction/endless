@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
-using Domain.Common;
-using MediatR;
 using Application.Contents.Dtos;
+using Domain.Common.Enums;
+using MediatR;
 
 namespace Application.Contents.Create;
 

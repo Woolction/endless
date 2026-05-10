@@ -1,8 +1,8 @@
-using Domain.Entities;
-using Domain.Interfaces;
-using Domain.Interfaces.Repositories;
-using MediatR;
+using Domain.Common.Interfaces.Repositories;
 using Microsoft.Extensions.Logging;
+using Domain.Common.Interfaces.Db;
+using Domain.Entities;
+using MediatR;
 
 namespace Application.Users.Delete;
 
@@ -17,7 +17,7 @@ public class UserDeleteHandler : IRequestHandler<UserDeleteCommand, Result<Null>
         this.context = context;
         this.logger = logger;
     }
-    
+
     public async Task<Result<Null>> Handle(UserDeleteCommand cmd, CancellationToken cancellationToken)
     {
         User? user = await context.Users.FindAsync(

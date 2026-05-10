@@ -1,14 +1,13 @@
 using Application.Channels.Search.CreateIndex;
 using Application.Contents.Search.CreateIndex;
 using Application.Users.Search.CreateIndex;
+using Microsoft.AspNetCore.Authorization;
 using Application.Searchs.DeleteIndex;
-using Elastic.Clients.Elasticsearch;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Common.Enums;
 using Application.Searchs;
 using Application;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Domain.Common;
 
 namespace API.Controllers;
 
@@ -92,5 +91,5 @@ public class IndicesController : ControllerBase
         }
 
         return NoContent();
-    } 
+    }
 }

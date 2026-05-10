@@ -1,8 +1,8 @@
-using Application.Channels.Dtos;
-using Domain.Interfaces;
-using MediatR;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Application.Channels.Dtos;
+using Domain.Common.Interfaces.Db;
+using MediatR;
 
 namespace Application.Channels.Choose.One;
 
@@ -16,7 +16,7 @@ public class ChannelChooseOneHandler : IRequestHandler<ChannelChooseOneQuery, Re
         this.context = context;
         this.logger = logger;
     }
-    
+
     public async Task<Result<ChannelDto>> Handle(ChannelChooseOneQuery query, CancellationToken cancellationToken)
     {
         ChannelDto? channelDto = await context.Channels
@@ -32,7 +32,7 @@ public class ChannelChooseOneHandler : IRequestHandler<ChannelChooseOneQuery, Re
 
         if (channelDto == null)
             return Result<ChannelDto>.Failure(404, "Channel not found");
-    
+
 
         logger.LogInformation("Returned channel {ChannelId}",
             channelDto.Id);

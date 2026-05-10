@@ -1,4 +1,3 @@
-using Application.Searchs;
 using MediatR;
 
 namespace Application.Channels.Search;

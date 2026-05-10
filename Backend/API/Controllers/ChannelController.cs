@@ -9,7 +9,7 @@ using Application.Channels.Search;
 using Application.Channels.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Application.Utilities;
-using Domain.Common;
+using Domain.Common.Enums;
 using Application;
 using MediatR;
 
