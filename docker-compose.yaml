@@ -9,6 +9,8 @@ services:
         condition: service_healthy
       search: 
         condition: service_started
+      rabbitmq:
+        condition: service_started
     volumes:
       - ./storage:/storage
     environment:
@@ -57,7 +59,18 @@ services:
       - ELASTICSEARCH_HOSTS=http://search:9200
     depends_on:
       - search
+  rabbitmq:
+    image: rabbitmq:4.3.0-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
   
 volumes:
   postgres-data:
   elasticsearch_data:
+  rabbitmq-data:
