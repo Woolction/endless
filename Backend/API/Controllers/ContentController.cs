@@ -1,29 +1,21 @@
-using Application.Contents.Create;
-using Application.Searchs;
-using Application.Contents.Dtos;
-using Application.Channels.Dtos;
-using Application.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
-using Domain.Interfaces.Services;
-using Microsoft.EntityFrameworkCore;
-using Domain.Common;
-using Microsoft.AspNetCore.Mvc;
-using Infrastructure.Context;
-using Domain.Entities;
-using API.Extensions;
-using Application.Utilities;
 using Application.Contents.Recommendate;
-using Application.Channels;
-using Application;
+using Application.Channels.Choose.One;
+using Application.Contents.Create;
 using Application.Contents.Search;
-using MediatR;
-using Application.Contents.Create.ForUser;
 using Application.Contents.Choose;
 using Application.Contents.Random;
 using Application.Contents.Update;
 using Application.Contents.Delete;
+using Application.Contents.Dtos;
+using Application.Channels.Dtos;
+using Microsoft.AspNetCore.Mvc;
 using Application.Users.Choose;
-using Application.Channels.Choose.One;
+using Application.Users.Dtos;
+using Application.Utilities;
+using Domain.Common.Enums;
+using Application;
+using MediatR;
 
 namespace API.Controllers;
 
@@ -40,7 +32,7 @@ public class ContentController : ControllerBase
 
     [HttpPost("Channel/{ChannelId}")]
     [Authorize(Policy = nameof(UserRole.Creator))]
-    public async Task<ActionResult<ContentDto>> CreateContent([FromRoute] Guid ChannelId, [FromForm] ContentCreateRequest request)
+    public async Task<ActionResult<ContentDto>> CreateContent([FromRoute] Guid? ChannelId, [FromForm] ContentCreateRequest request)
     {
         ContentCreateCommand cmd = new(
             this.GetIDFromClaim(), ChannelId,
@@ -59,33 +51,6 @@ public class ContentController : ControllerBase
             {
                 404 => NotFound(result.Error),
                 403 => Forbid(result.Error!),
-                _ => StatusCode(500, "unknown error")
-            };
-        }
-
-        return Created($"api/content/{result.Data!.ContentId}", result.Data);
-    }
-
-    [HttpPost]
-    [Authorize(Policy = nameof(UserRole.Creator))]
-    public async Task<ActionResult<ContentDto>> CreateContentForUser(ContentCreateRequest request)
-    {
-        ContentCreateForUserCommand cmd = new(
-            this.GetIDFromClaim(),
-            request.ContentFile,
-            request.PrewievPhoto,
-            request.Title,
-            request.Description,
-            request.ContentType
-        );
-
-        Result<ContentDto> result = await mediator.Send(cmd);
-
-        if (!result.IsSuccess || result.Data == null)
-        {
-            return result.StatusCode switch
-            {
-                404 => NotFound(result.Error),
                 _ => StatusCode(500, "unknown error")
             };
         }
