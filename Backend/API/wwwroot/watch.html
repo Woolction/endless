@@ -33,10 +33,12 @@
 
             let id = urlParams.get("id"); 
 
-            if (!id) 
-            {
+            if (!id) {
                 id = document.getElementById("contentId").value;
             }
+
+            if (!id)
+                return
 
             const response = await fetch(`/api/content/${id}`);
 
@@ -103,10 +105,16 @@
         }
 
         async function sendInteraction() {
-            const id = document.getElementById("contentId").value;
+            const urlParams = new URLSearchParams(window.location.search)
+
+            let id = urlParams.get("id");
+
+            if (!id) {
+                id = document.getElementById("contentId").value;
+            }
 
             if (!id)
-                return;
+                return
 
             await fetch(`/api/userinteraction/content/${id}`, {
                 credentials: "include",

@@ -1,26 +1,29 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using API.Middleware;
-using Domain.Interfaces.Repositories;
-using Infrastructure.Repositories;
+using Infrastructure.Services.RabbitConsumers;
+using Infrastructure.Services.Background;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.StaticFiles;
-using Domain.Interfaces.Services;
-using Infrastructure.Connector;
-using Infrastructure.Services;
-using Infrastructure.Context;
+using Domain.Common.Interfaces.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Domain.Common;
-using Domain.Entities;
-using Scalar.AspNetCore;
-using System.Text;
-using Domain.Interfaces;
 using Elastic.Clients.Elasticsearch;
+using Application.Contents.Create;
+using Infrastructure.Repositories;
+using Domain.Common.Interfaces.Services;
+using Infrastructure.Connector;
+using Infrastructure.Services;
+using Infrastructure.Context;
+using Domain.Common.Interfaces.Db;
+using Scalar.AspNetCore;
+using Domain.Entities;
+using API.Middleware;
+using Domain.Common.Enums;
+using System.Text;
 using Application;
-using Microsoft.AspNetCore.Http.Features;
-using System.Net.NetworkInformation;
-using Microsoft.Extensions.FileProviders;
+using RabbitMQ.Client;
 
 namespace API;
 
@@ -135,12 +138,16 @@ public static class ProgramPipeline
             });
         });
 
+        // Custum Services
+
         // Db context
         builder.Services.AddDbContext<EndlessContext>(context =>
             context.UseNpgsql(DbKey));
 
         builder.Services.AddScoped<IAppDbContext>(provider =>
             provider.GetRequiredService<EndlessContext>());
+
+        builder.Services.AddSingleton<DbConnectorFactory>();
 
         // ElasticSearch
         builder.Services.AddSingleton(sp =>
@@ -155,7 +162,11 @@ public static class ProgramPipeline
         builder.Services.AddMediatR(cf =>
             cf.RegisterServicesFromAssembly(typeof(AppMaker).Assembly));
 
-        // Custum Services
+        // RabbitMQ
+        builder.Services.AddSingleton<RabbitConnectorFactory>();
+
+        builder.Services.AddSingleton<IRabbitMqConnector>(provider =>
+            provider.GetRequiredService<RabbitConnectorFactory>());
 
         //      Scoped
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -169,15 +180,20 @@ public static class ProgramPipeline
         builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
         //      Singleton
-        builder.Services.AddSingleton<DbConnectorFactory>();
-
         builder.Services.AddSingleton<IInteractionService, InteractionService>();
         builder.Services.AddSingleton<IRecommendationService, RecommendationService>();
 
         builder.Services.AddSingleton<IR2Service, R2Service>();
         builder.Services.AddSingleton<IFfmpegService, FfmpegService>();
 
+        builder.Services.AddSingleton<ContentCreatePublisher>();
+
         //      Transient
+        builder.Services.AddTransient<IConsumer, VideoUploadingConsumer>();
+
+        // Background Services
+
+        builder.Services.AddHostedService<RabbitMqConsumers>();
     }
 
     public static async Task MiddlewareRegistry(this WebApplication app)
