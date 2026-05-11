@@ -2,5 +2,6 @@
   <Project Path="Backend/Infrastructure/Infrastructure.csproj"/>
   <Project Path="Backend/Application/Application.csproj"/>
   <Project Path="Backend/Domain/Domain.csproj"/>
+  <Project Path="Backend/Tests/Tests.csproj"/>
   <Project Path="Backend/API/API.csproj"/>
 </Solution>
