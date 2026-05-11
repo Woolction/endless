@@ -3,8 +3,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN dotnet restore Backend/API/API.csproj
-RUN dotnet publish Backend/API/API.csproj -c Release -o /out 
+RUN dotnet restore src/API/API.csproj
+RUN dotnet publish src/API/API.csproj -c Release -o /out 
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 
