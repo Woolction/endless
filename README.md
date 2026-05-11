@@ -1,27 +1,122 @@
 # Endless
 
 This is a YouTube-example web application for video streaming, content discovery, and user interaction, with high-performance REST API built in ASP.NET Core. 
-#### It implements the following technologies: 
 
-1. downloading videos in m3u8 format using ffmpeg.
-2. publishing tasks to rabbitmq queue and consuming.
-3. a recommendation system based on preference vectors.
-4. authentication and authorization (creating a user, channel, etc.)
-5. user interactions (comments, likes, dislikes, saving videos, etc.)
+### **Why this project matters**
 
-## Features
-- JWT Authentication (Token Rotation, Rate Limiting)
+This project demonstrates real-world backend architecture including:
+
+- scalable video processing pipeline using FFmpeg (HLS / m3u8 generation) and background workers
+- event-driven job processing using RabbitMQ (producer/consumer model)
+- modular Clean Architecture design with separation of concerns
+- integration of multiple data storage systems (PostgreSQL, Elasticsearch)
+- recommendation system using vector-based similarity for personalized video ranking
+- production-like Dockerized environment for full system orchestration
+- user interaction system for videos (likes, comments, saves, etc.)
+
+### **Features**
+- JWT Authentication (Token Rotation, Rate Limiting, Role-based Authorization)
 - Pagination, Filtering, Cookies, Logging
-- Repository Patter, CQRS, MediatR
-- RabbitMQ, xUnit Tests, SignalR
-- Clean Architecture and Code
-- Open API whitch Scalar
+- Repository Pattern, CQRS, MediatR
+- RabbitMQ messaging system
+- xUnit Tests, SignalR
+- Open API with Scalar
 
 ## Tech Stack
-`C#` `ASP.NET Core` `PostgreSQL` `Entity Framework core` `Dapper` `Elasticsearch` `RabbitMQ` `xUnit` `Docker compose` 
+
+- Backend: `ASP.NET Core (.NET)`
+- Database: `PostgreSQL`, `Dapper`, `Entity Framework Core`
+- Messaging: `RabbitMQ`
+- Search: `Elasticsearch`
+- Testing: `xUnit`
+- DevOps: `Docker`, `Docker Compose`
 
 ## How to run
 
-## Why this project matters
+#### **1. Clone repo:**
+```
+git clone https://github.com/woolction/endless
+```
+#### **2. Create .env:**
+``` .env
+DB_USER=postgres
+DB_PASSWORD=password
+DB_NAME=endless
+
+SecretKey=64 bytes of random numbers
+Issuer=Endless
+Audience=EndlessUsers
+ExpireMinutes=30
+```
+#### **3. Start Docker compose:**
+``` powershell
+docker compose up --build
+```
+#### **4. Open API**
+```
+- api docs: http://localhost:5000/scalar/v1
+- upload video: http://localhost:5000/upload.html
+- watch videos: http://localhost:5000/watch.html
+```
 
 ## Project structure
+
+``` 
+endless/
+│
+├── src/
+│   ├── API/                
+│   │   ├── Controllers/
+│   │   ├── Extensions/       
+│   │   ├── Middlewares/
+│   │   ├── Properties/       
+│   │   ├── wwwroot/          
+│   │   ├── appsettings.json
+│   │   ├── API.csproj
+│   │   └── Program.cs
+│   │
+│   ├── Application/        
+│   │   ├── Contents/
+│   │   │   ├── Choose/
+│   │   │   │   ├── Query.cs
+│   │   │   └── Create/
+│   │   │       ├── Command.cs
+│   │   │       ├── Handler.cs
+│   │   │       ├── Request.cs
+│   │   │       └── Publisher.cs
+│   │   ├── .../
+│   │   ├── Utilities/
+│   │   ├── Application.csproj
+│   │   ├── AppMaker.cs
+│   │   └── Result.cs
+│   │ 
+│   ├── Domain/         
+│   │   ├── Common/
+│   │   │   ├── Enums/
+│   │   │   └── Interfaces/
+│   │   ├── Entities/
+│   │   ├── Rows/
+│   │   └── Domain.csproj
+│   │
+│   └── Infrastructure/      
+│       ├── Connector/
+│       ├── Contexts/
+│       ├── Managers/
+│       ├── Repositories/
+│       ├── Services/
+│       │   ├── Background/
+│       │   └── RabbitConsumers/
+│       └── Infrastructure.csproj
+│
+├── tests/
+│   ├── test-files...
+│   └── tests.csproj
+│
+├── docker/
+│   └── Dockerfile
+│    
+├── docker-compose.yml
+├── .gitignore
+├── README.md
+└── Endless.slnx
+```
