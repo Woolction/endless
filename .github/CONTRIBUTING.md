@@ -54,3 +54,11 @@ git push origin feat/your-feature-name
 ```
 #### 5. Open a Pull Request
 * From github
+
+## Rewards 
+​Writing code is the most important part of the project. Developers who make significant contributions will be rewarded upon the platform's launch:
+
+* **​Contributor Badge:** You will get a unique `Core Developer` or `Contributor` badge on the Endless platform.
+* **​Governance:** Significant contributors will have a vote in future project decisions.
+* **​Mentions:** You will be mentioned in the project history.
+* **Monetization:** You will receive 75% - 90%.
