@@ -3,8 +3,13 @@ WORKDIR /app
 
 COPY . .
 
-RUN dotnet restore src/API/API.csproj
-RUN dotnet publish src/API/API.csproj -c Release -o /out 
+RUN dotnet restore 
+
+FROM build AS test-runner
+RUN dotnet test tests/tests.csproj -c Release --no-restore
+
+FROM build AS publish
+RUN dotnet publish src/API/API.csproj -c Release -o /out --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 
@@ -16,6 +21,6 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-COPY --from=build /out .
+COPY --from=publish /out .
 
 ENTRYPOINT ["dotnet", "API.dll"]
