@@ -16,7 +16,7 @@ YouTube has become a corporate monolith focused on advertising and data collecti
 - **Privacy by Design:** Your data is not a product. We collect only what is strictly necessary for the platform to function. We never sell your information to third-party brokers: [Learn more about Privacy Policy.](https://github.com/Woolction/endless/wiki/Privacy-Policy)
 - **Creator-First Revenue:** We believe creators deserve the lion's share. Endless offers a disruptive 50% to 90% revenue share for creators, compared to the industry standard: [Learn more about Monetization.](https://github.com/Woolction/endless/wiki/Monetization-in-Endless)
 - **Radical Transparency** ([The Endless Wiki](https://github.com/Woolction/endless/wiki)): No "black box" algorithms. Our Wikipedia-style documentation allows anyone to see how our systems work-from Vector Embeddings to ranking logic.
-- **Community-Led Evolution:** Endless is open to the world. Any developer can contribute to the core, and every user has a voice in reporting issues or suggesting changes: [Learn more about contributing](.github/CONTRIBUTING.md)
+- **Community-Led Evolution:** Endless is open to the world. Any developer can contribute to the core, and every user has a voice in reporting issues or suggesting changes: [Learn more about contributing](CONTRIBUTING.md)
 
 ### Core Infrastructure
 
@@ -132,7 +132,11 @@ endless/
 ---
 ## Contributing
 
-Please read the [Contributing Rules](.github/CONTRIBUTING.md) and how best to contribute to development before making your first pull request.
+Please read the [Contributing Rules](CONTRIBUTING.md) and how best to contribute to development before making your first pull request.
+
+## Promotion
+
+Want to help us grow? Check out our [Promotion](PROMOTION.md) We need people who can create hype around the project.
 
 ## License
 
