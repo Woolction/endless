@@ -120,3 +120,17 @@ endless/
 ├── README.md
 └── Endless.slnx
 ```
+
+---
+## License & Copyright
+
+This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). 
+For more details, see the [LICENSE](LICENSE) file.
+
+***Commercial licensing is available upon request.***
+
+### Contributing
+By contributing to this project, you agree to sign our [Contributor License Agreement (CLA)](https://gist.github.com/Woolction/7ead628e8c36751793ed60536c2bfc9f). 
+All pull requests require a signed CLA before they can be merged.
+
+**Copyright © 2026 Woolction.**
