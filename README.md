@@ -127,7 +127,7 @@ endless/
 This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). 
 For more details, see the [LICENSE](LICENSE) file.
 
-***Commercial licensing is available upon request.***
+***Commercial licensing is available upon request. [Woolction@gmail.com]***
 
 ### Contributing
 By contributing to this project, you agree to sign our [Contributor License Agreement (CLA)](https://gist.github.com/Woolction/7ead628e8c36751793ed60536c2bfc9f). 
