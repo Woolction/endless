@@ -142,13 +142,11 @@ endless/
 
 Endless is built and maintained int the free time of creator and contributors. The most effective way to support the project is to share your time and experience.
 
-The primary ways to help are to:
+### The primary ways to help are to:
 
-### Contributing
-* Please read the [Contributing Rules](CONTRIBUTING.md) and how best to contribute to development before making your first pull request.
-
-### Promotion
-* Want to help us grow? Check out our [Promotion](PROMOTION.md) We need people who can create hype around the project.
+1. ***`Contributing:`*** Contribute features and fixing bugs, please read the [Contributing Rules](CONTRIBUTING.md) and how best to contribute to development before making your first pull request.
+2. ***`Promotion:`*** Want to help us grow? Check out our [Promotion Guide](PROMOTION.md) We need people who can create hype around the project.
+3. ***`Issues:`*** Find bugs and report them as described in [Contributing Rules](CONTRIBUTING.md) or come up with new features
 
 ***If you want to support the project,  you can do so via [GitHub Sponsors](https://github.com/sponsors/Project-OSRM) or [Ko-fi](https://ko-fi.com/woolction) or [DonationAlerts](https://www.donationalerts.com/r/solderey) we would be very happy with even a very small payment***
 
