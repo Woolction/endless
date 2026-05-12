@@ -122,9 +122,16 @@ endless/
 │
 ├── docker/
 │   └── Dockerfile
-│    
+│
+├── .github/
+│   ├── workflows/
+│   └── FUNDING.yml
+│
 ├── docker-compose.yml
 ├── .gitignore
+├── CONTRIBUTING.md
+├── PROMOTION.md
+├── LICENSE.md
 ├── README.md
 └── Endless.slnx
 ```
