@@ -93,10 +93,13 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
 
         await context.SaveChangesAsync();
 
-        var message = new VideoUploadMessage(
-            content.Id, videoPath);
+        if (videoPath != null)
+        {
+            var message = new VideoUploadMessage(
+                content.Id, videoPath);
 
-        await publisher.PublishAsync(message, cancellationToken);
+            await publisher.PublishAsync(message, cancellationToken);
+        }
 
         logger.LogInformation("Content {ContentId} created for user {UserId}",
             content.Id, cmd.UserId);

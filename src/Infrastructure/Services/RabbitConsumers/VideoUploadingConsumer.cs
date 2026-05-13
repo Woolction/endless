@@ -72,12 +72,7 @@ public class VideoUploadingConsumer : IConsumer
                     return;
                 }
 
-                string? videoUrl = null;
-
-                if (message.VideoPath != null)
-                {
-                    videoUrl = await ffmpegService.UploadGeneratedVideos(message.VideoPath);
-                }
+                content.ContentUrl = await ffmpegService.UploadGeneratedVideos(message.VideoPath);                
 
                 int duration = await GetVideoDuration(message.VideoPath);
 
