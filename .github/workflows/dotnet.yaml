@@ -20,5 +20,8 @@ jobs:
     - name: Run Tests
       run: docker build -f docker/Dockerfile --target test-runner -t endless-tests .
 
+    - name: Create license file
+      run: echo "${{ secret.SIXLABORS_LICENSE }}" > sixlabors.lic
+
     - name: Build Final
       run: docker compose build
