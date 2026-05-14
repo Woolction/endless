@@ -57,3 +57,4 @@ nunit-*.xml
 appsettings.Development.json
 /storage
 *.env
+*.lic
