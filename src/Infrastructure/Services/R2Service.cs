@@ -25,9 +25,9 @@ public class R2Service : IR2Service
         );
     }*/
 
-    public async Task<string> UploadDirectory(string folder, string keyPrefix, string bucketName = "videos")
+    public async Task<string> UploadDirectory(string folder, string keyPrefix, string bucketName = "videos", CancellationToken token = default)
     {
-        //var transfer = new TransferUtility(_s3);
+        /*var transfer = new TransferUtility(_s3);
 
         var files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
 
@@ -35,12 +35,31 @@ public class R2Service : IR2Service
         {
             string key = $"{keyPrefix}/{Path.GetFileName(file)}";
 
-            //await transfer.UploadAsync(file, bucketName, key);
-        }
+            await transfer.UploadAsync(file, bucketName, key, token);
+        }*/
 
         return $"https://<Channel-name>/{keyPrefix}";
     }
+    
+    public async Task<string> SaveFormFileAsync(IFormFile file, string folderName, string ext = null!, CancellationToken token = default)
+    {
+        /*if (file == null || file.Length == 0)
+            throw new ArgumentException("File is empty");*/
 
+        string id = Guid.NewGuid().ToString();
+        string projectRoot = Directory.GetCurrentDirectory();
+        string folder = Path.Combine(projectRoot, "files", folderName);
+
+        Directory.CreateDirectory(folder);
+
+        string extension = ext ?? Path.GetExtension(file.FileName);
+        string filePath = Path.Combine(folder, id + extension);
+
+        await using var stream = new FileStream(filePath, FileMode.Create);
+        await file.CopyToAsync(stream, token);
+
+        return filePath;
+    }
 
     public string SaveVideo(string folder, string keyPrefix)
     {
@@ -62,7 +81,7 @@ public class R2Service : IR2Service
         return $"/storage/{keyPrefix}/master.m3u8";
     }
 
-    public async Task<string> SaveImage(string file, string ext = ".jpeg")
+    public string SaveImage(string file, string ext = ".jpeg")
     {
         string id = Guid.NewGuid().ToString();
 
@@ -75,26 +94,6 @@ public class R2Service : IR2Service
         File.Move(file, path);
 
         return $"/storage/images/{id}{ext}";
-    }
-
-    public async Task<string> SaveFormFileAsync(IFormFile file, string folderName, string ext = null!)
-    {
-        /*if (file == null || file.Length == 0)
-            throw new ArgumentException("File is empty");*/
-
-        string id = Guid.NewGuid().ToString();
-        string projectRoot = Directory.GetCurrentDirectory();
-        string folder = Path.Combine(projectRoot, "files", folderName);
-
-        Directory.CreateDirectory(folder);
-
-        string extension = ext ?? Path.GetExtension(file.FileName);
-        string filePath = Path.Combine(folder, id + extension);
-
-        await using var stream = new FileStream(filePath, FileMode.Create);
-        await file.CopyToAsync(stream);
-
-        return filePath;
     }
 
 }

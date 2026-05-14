@@ -61,19 +61,18 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
         }
 
         string? videoPath = null;
-        string? photoUrl = null;
+        string? photoPath = null;
 
         if (cmd.ContentFile != null && cmd.ContentFile.Length != 0)
         {
-            videoPath = await r2Service.SaveFormFileAsync(cmd.ContentFile, "Video");
+            videoPath = await r2Service.SaveFormFileAsync(
+                cmd.ContentFile, "Video", token: cancellationToken);
         }
 
         if (cmd.PrewievPhoto != null && cmd.PrewievPhoto.Length != 0)
         {
-            string photoPath = await r2Service.SaveFormFileAsync(cmd.PrewievPhoto, "Images", ".jpeg");
-            photoUrl = await r2Service.SaveImage(photoPath);
-
-            File.Delete(photoPath);
+            photoPath = await r2Service.SaveFormFileAsync(
+                cmd.PrewievPhoto, "Images", ".jpeg", token: cancellationToken);
         }
 
         Content content = new()
@@ -82,8 +81,6 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
             ChannelId = cmd.ChannelId,
             Title = cmd.Title,
             Slug = Guid.NewGuid(),
-            ContentUrl = null,
-            PreviewPhotoUrl = photoUrl,
             CreatedDate = DateTime.UtcNow,
             RandomKey = System.Random.Shared.NextDouble(),
             ContentType = cmd.ContentType

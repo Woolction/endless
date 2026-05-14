@@ -54,9 +54,9 @@ public class UserUpdateHandler : IRequestHandler<UserUpdateCommand, Result<UserD
 
         if (cmd.AvatarPhoto != null && cmd.AvatarPhoto.Length != 0)
         {
-            string photoPath = await r2Service.SaveFormFileAsync(cmd.AvatarPhoto, "Images", ".jpeg");
+            string photoPath = await r2Service.SaveFormFileAsync(cmd.AvatarPhoto, "Images", ".jpeg", cancellationToken);
 
-            string photoUrl = await r2Service.SaveImage(photoPath);
+            string photoUrl = r2Service.SaveImage(photoPath);
 
             user.u.AvatarPhotoUrl = photoUrl;
 

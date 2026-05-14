@@ -35,6 +35,7 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
             .Where(content =>
                 content.Id == request.ContentId &&
                 content.CreatorId == request.UserId)
+            .Include(c => c.VideoMeta)
             .Select(content => new
             {
                 c = content,
@@ -49,37 +50,34 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
         if (content == null)
             return Result<ContentDto>.Failure(404, "Content not found");
 
-        VideoMetaData? videoMetaData = await context.VideoMetas
-            .FirstOrDefaultAsync(videoMeta => videoMeta.ContentId == request.ContentId, cancellationToken);
-
         string videoUrl = null!;
         string videoPath = null!;
 
         if (request.ContentFile != null && request.ContentFile.Length != 0)
         {
-            videoPath = await r2Service.SaveFormFileAsync(request.ContentFile, "Video");
-            videoUrl = await ffmpegService.UploadGeneratedVideos(videoPath);
+            videoPath = await r2Service.SaveFormFileAsync(request.ContentFile, "Video", token: cancellationToken);
+            videoUrl = await ffmpegService.UploadGeneratedVideos(videoPath, cancellationToken);
         }
 
         string photoUrl = null!;
 
         if (request.PrewievPhoto != null && request.PrewievPhoto.Length != 0)
         {
-            string photoPath = await r2Service.SaveFormFileAsync(request.PrewievPhoto, "Images", ".jpeg");
-            photoUrl = await r2Service.SaveImage(photoPath);
+            string photoPath = await r2Service.SaveFormFileAsync(request.PrewievPhoto, "Images", ".jpeg", cancellationToken);
+            photoUrl = r2Service.SaveImage(photoPath);
 
             File.Delete(photoPath);
         }
 
         content.c.Title = request.Title;
-        content.c.ContentUrl = videoUrl;
-        content.c.PreviewPhotoUrl = photoUrl;
         content.c.ContentType = request.ContentType;
 
-        if (videoMetaData != null && videoPath != null)
+        content.c.VideoMeta.VideoUrl = videoUrl;
+        content.c.VideoMeta.PhotoUrl = photoUrl;
+        
+        if (videoPath != null)
         {
-            videoMetaData.ContentId = request.ContentId;
-            videoMetaData.DurationSeconds = await ffmpegService.GetVideoDuration(videoPath);
+            content.c.VideoMeta.DurationSeconds = await ffmpegService.GetVideoDuration(videoPath);
 
             File.Delete(videoPath);
         }
