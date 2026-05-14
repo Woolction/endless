@@ -156,7 +156,4 @@ Endless is built and maintained int the free time of creator and contributors. T
 This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). 
 For more details, see the [LICENSE](LICENSE) file.
 
-***Commercial licensing is available upon request. [Woolction@gmail.com]***
-
-
 #### ***Copyright © 2026 Woolction.***
