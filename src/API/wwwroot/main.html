@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Endless</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- TOP NAVBAR -->
+        <header class="navbar">
+        
+            <div class="navbar-left">
+        
+                <button class="menu-button" id="menuButton">
+                    ☰
+                </button>
+        
+                <div class="logo">
+                    Endless
+                </div>
+        
+            </div>
+        
+        </header>
+        
+        <aside class="sidebar" id="sidebar">
+        
+            <nav class="menu">
+        
+                <div class="menu-item">
+                    <span class="icon">-</span>
+                    <span class="text">Home</span>
+                </div>
+        
+                <div class="menu-item">
+                    <span class="icon">-</span>
+                    <span class="text">History</span>
+                </div>
+        
+                <div class="menu-item">
+                    <span class="icon">-</span>
+                    <span class="text">Channels</span>
+                </div>
+        
+                <div class="menu-item">
+                    <span class="icon">-</span>
+                    <span class="text">Trending</span>
+                </div>
+        
+            </nav>
+        
+        </aside>
+        
+        <main class="main" id="main">
+        
+            <div class="videos-grid" id="grid"></div>
+        
+        </main>
+
+    </div>
+
+    <script>
+        function SetSidebar() {
+
+            const sidebar = document.getElementById("sidebar");
+            const main = document.getElementById("main");
+            const menuButton = document.getElementById("menuButton");
+
+            let collapsed = true;
+
+            menuButton.addEventListener("click", () => {
+
+                const mobile = window.innerWidth < 1430;
+
+                // MOBILE
+                if (mobile) {
+                    
+                    sidebar.classList.toggle("mobile-show");
+                    return;
+                }
+
+                // DESKTOP
+                collapsed = !collapsed;
+
+                sidebar.classList.toggle("collapsed");
+                main.classList.toggle("expanded");
+            });
+
+            let isMobiled = false;
+
+            window.addEventListener("resize", () => {
+
+                if (window.innerWidth >= 1430) {
+
+                    sidebar.classList.remove("mobile-show");
+
+                    if (collapsed && isMobiled) {
+
+                        isMobiled = false;
+
+                        sidebar.classList.add("collapsed");
+                        main.classList.add("expanded");
+                    }
+                }
+                else if (collapsed) {
+
+                    isMobiled = true;
+
+                    sidebar.classList.remove("collapsed");
+                    main.classList.remove("expanded");
+                }
+            });
+        }
+
+        async function refreshToken() {
+            await fetch("/api/auth/token", {
+                method: "PUT",
+                credentials: "include"
+            });
+        }
+
+        async function fetchVideos() {
+
+            let res = await fetch("/api/content/recommendation", {
+                credentials: "include"
+            });
+
+            // 401 => refresh token
+            if (res.status === 401) {
+
+                await refreshToken();
+            }
+
+            // 404 => fallback to random
+            if (res.status === 404) {
+
+                res = await fetch("/api/content/random", {
+                    credentials: "include"
+                });
+            }
+            else 
+            {
+                res = await fetch("/api/content/recommendation", {
+                    credentials: "include"
+                });
+            }
+
+            const data = await res.json();
+
+            const grid = document.getElementById("grid");
+
+            grid.innerHTML = "";
+
+            data.forEach(v => {
+
+                const card = document.createElement("div");
+
+                card.className = "video-card";
+
+                const title = v.title.length > 64 ? v.title.substring(0, 64) + "..." : v.title;
+
+                card.innerHTML = `
+                    <img 
+                        class="photo-preview"
+                        src="${v.photo.url}"
+                        alt="${title}"
+                    />
+
+                    <div class="video-info">
+                        <div class="video-title">
+                            ${title}
+                        </div>
+                    </div>`
+                    ;
+
+                card.onclick = () => {
+                    location.href = `/watch.html?id=${v.contentId}`;
+                };
+
+                const img = card.querySelector(".photo-preview");
+
+                let rgbaColor;
+
+                function applyColor() {
+
+                    rgbaColor = `rgba(${v.photo.colorR}, ${v.photo.colorG}, ${v.photo.colorB}, 0.25)`;
+
+                    card.dataset.color = rgbaColor;
+                }
+
+                if (img.complete) {
+
+                    applyColor();
+                }
+                else {
+
+                    img.onload = applyColor;
+                }
+
+                card.addEventListener("mouseenter", () => {
+
+                    card.style.background = rgbaColor;
+                });
+
+                card.addEventListener("mouseleave", () => {
+
+                    card.style.background = "#0f0f0f";
+                });
+
+                grid.appendChild(card);
+            });
+        }
+        
+        window.addEventListener("DOMContentLoaded", () => {
+            SetSidebar();
+            fetchVideos();
+        });
+
+    </script>
+
+</body>
+
+</html>

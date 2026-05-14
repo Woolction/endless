@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Utilities;
 using Domain.Common.Enums;
 using Domain.Entities;
+using Application.Dtos;
 
 namespace API.Controllers;
 
@@ -32,6 +33,7 @@ public class SavingController : ControllerBase
 
         User? currentUser = await context.Users.FindAsync(currentUserId);
         var content = await context.Contents
+            .Include(c => c.VideoMeta)
             .Select(content => new
             {
                 c = content,
@@ -39,10 +41,9 @@ public class SavingController : ControllerBase
                     content.Id, content.ChannelId, content.CreatorId,
                     content.Title, content.Slug, content.Description,
                     content.CreatedDate, content.ContentType.ToString(),
-                    content.VideoMeta != null ? content.VideoMeta.DurationSeconds : 0,
-                    content.ContentUrl, content.PreviewPhotoUrl, content.Savers.Count,
-                    content.Likers.Count, content.Comments.Count, content.DisLikers.Count,
-                    content.ViewsCount)
+                    content.VideoMeta.DurationSeconds, content.VideoMeta.VideoUrl,
+                    new PreviewPhotoDto(content.VideoMeta.PhotoUrl, content.VideoMeta.ColorR, content.VideoMeta.ColorG, content.VideoMeta.ColorB),
+                    content.Savers.Count, content.Likers.Count, content.Comments.Count, content.DisLikers.Count, content.ViewsCount)
             })
             .FirstOrDefaultAsync(content => content.c.Id == ContentId);
 

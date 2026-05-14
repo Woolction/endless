@@ -5,6 +5,7 @@ using Application.Contents.Dtos;
 using Domain.Rows.Contents;
 using MediatR;
 using Application.Contents.Create;
+using Application.Dtos;
 
 namespace Application.Contents.Search;
 
@@ -34,7 +35,8 @@ public class ContentSearchingHandler : IRequestHandler<ContentSearchQuery, Resul
                 c.SearchedContent.ContentId, c.SearchedContent.ChannelId, c.SearchedContent.CreatorId,
                 c.SearchedContent.Title, c.SearchedContent.Slug, c.SearchedContent.Description,
                 c.SearchedContent.CreatedDate, c.SearchedContent.ContentType.ToString(),
-                c.SearchedContent.DurationSeconds, c.SearchedContent.ContentUrl, c.SearchedContent.PreviewPhotoUrl,
+                c.SearchedContent.DurationSeconds, c.SearchedContent.ContentUrl,
+                new PreviewPhotoDto($"{c.SearchedContent.PreviewPhotoUrl}", c.SearchedContent.ColorR, c.SearchedContent.ColorG, c.SearchedContent.ColorB),
                 0, 0, 0, 0, c.SearchedContent.ViewsCount), c.Score)).ToArray();
 
         if (contentDtos.Length < 1)

@@ -17,12 +17,14 @@ public class VideoUploadingConsumer : IConsumer
     private readonly IServiceScopeFactory scopeFactory;
 
     private readonly IFfmpegService ffmpegService;
+    private readonly IR2Service r2Service;
     private IChannel? channel;
 
-    public VideoUploadingConsumer(IServiceScopeFactory scopeFactory, IFfmpegService ffmpegService)
+    public VideoUploadingConsumer(IServiceScopeFactory scopeFactory, IFfmpegService ffmpegService, IR2Service r2Service)
     {
         this.ffmpegService = ffmpegService;
         this.scopeFactory = scopeFactory;
+        this.r2Service = r2Service;
     }
 
     public async Task Consume(IConnection connection, CancellationToken token)
@@ -60,7 +62,9 @@ public class VideoUploadingConsumer : IConsumer
 
                 var context = scope.ServiceProvider.GetRequiredService<IAppDbContext>();
 
-                Content? content = await context.Contents.FindAsync(message.ContentId);
+                Content? content = await context.Contents
+                    .Include(c => c.VideoMeta)
+                    .FirstOrDefaultAsync(c => c.Id == message.ContentId);
 
                 if (content == null)
                 {
@@ -72,17 +76,43 @@ public class VideoUploadingConsumer : IConsumer
                     return;
                 }
 
-                content.ContentUrl = await ffmpegService.UploadGeneratedVideos(message.VideoPath);                
-
-                int duration = await GetVideoDuration(message.VideoPath);
-
-                VideoMetaData metaData = new()
+                if (message.PhotoPath != null)
                 {
-                    Content = content,
-                    DurationSeconds = duration
-                };
+                    Console.WriteLine("Video.Upload: get photo from video and average color");
 
-                context.VideoMetas.Add(metaData);
+                    string photoUrl = r2Service.SaveImage(message.PhotoPath);
+
+                    content.VideoMeta.PhotoUrl = photoUrl;
+
+                    await content.VideoMeta.SetAverageColor(photoUrl, token);
+
+                    File.Delete(message.PhotoPath);
+                }
+
+                if (message.VideoPath != null)
+                {
+                    if (message.PhotoPath == null)
+                    {
+                        Console.WriteLine("Video.Upload: get photo from video and average color");
+
+                        string photoUrl = await ffmpegService.GetPhotoFromVideo(message.VideoPath, timeSeconds: 60, token: token);
+
+                        content.VideoMeta.PhotoUrl = photoUrl;
+
+                        await content.VideoMeta.SetAverageColor(photoUrl, token);
+                    }
+
+                    Console.WriteLine("Video.Upload: get video duration with ffmpeg");
+
+                    content.VideoMeta.DurationSeconds = await ffmpegService.GetVideoDuration(message.VideoPath, token); ;
+
+                    Console.WriteLine("Video.Upload: uploading video with ffmpeg");
+
+                    content.VideoMeta.VideoUrl = await ffmpegService.UploadGeneratedVideos(message.VideoPath, token);
+
+                    File.Delete(message.VideoPath);
+                }
+                
                 context.ContentVectors.AddRange(await context.Genres
                     .Select(genre => new ContentGenreVector()
                     {
@@ -93,13 +123,19 @@ public class VideoUploadingConsumer : IConsumer
                     .ToArrayAsync(token)
                 );
 
+                Console.WriteLine("Video.Upload: save changes and create index");
+
                 await context.SaveChangesAsync();
 
                 await scope.ServiceProvider.GetRequiredService<IContentRepository>()
-                    .CreateSearchIndex(content, metaData, token);
+                    .CreateSearchIndex(content, content.VideoMeta, token);
+
+                Console.WriteLine("Video.Upload: asc");
 
                 await channel.BasicAckAsync(
                     ea.DeliveryTag, false, token);
+
+                Console.WriteLine("Video.Upload: process succed");
             }
             catch (Exception ex)
             {
@@ -112,7 +148,7 @@ public class VideoUploadingConsumer : IConsumer
 
         await channel.BasicQosAsync(
             prefetchSize: 0,
-            prefetchCount: 1,
+            prefetchCount: 2,
             global: false,
             token);
 
@@ -125,20 +161,6 @@ public class VideoUploadingConsumer : IConsumer
             arguments: null,
             consumer,
             token);
-    }
-
-    private async Task<int> GetVideoDuration(string? videoPath)
-    {
-        if (videoPath != null)
-        {
-            int duration = await ffmpegService.GetVideoDuration(videoPath);
-
-            File.Delete(videoPath);
-
-            return duration;
-        }
-
-        return 0;
     }
 
     public void Dispose()

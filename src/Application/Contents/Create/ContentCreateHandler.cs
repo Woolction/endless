@@ -8,6 +8,7 @@ using Domain.Rows.Contents;
 using Domain.Entities;
 using Domain.Common.Enums;
 using MediatR;
+using Application.Dtos;
 
 namespace Application.Contents.Create;
 
@@ -90,13 +91,10 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
 
         await context.SaveChangesAsync();
 
-        if (videoPath != null)
-        {
-            var message = new VideoUploadMessage(
-                content.Id, videoPath);
+        var message = new VideoUploadMessage(
+            content.Id, videoPath, photoPath);
 
-            await publisher.PublishAsync(message, cancellationToken);
-        }
+        await publisher.PublishAsync(message, cancellationToken);
 
         logger.LogInformation("Content {ContentId} created for user {UserId}",
             content.Id, cmd.UserId);
@@ -105,6 +103,8 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
             content.Id, content.ChannelId, content.CreatorId,
             content.Title, content.Slug, content.Description,
             content.CreatedDate, content.ContentType.ToString(), 0,
-            content.ContentUrl, content.PreviewPhotoUrl, 0, 0, 0, 0, 0));
+            content.VideoMeta.VideoUrl, new PreviewPhotoDto(
+                content.VideoMeta.PhotoUrl, content.VideoMeta.ColorR, content.VideoMeta.ColorG, content.VideoMeta.ColorB),
+            0, 0, 0, 0, 0));
     }
 }

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -38,7 +38,7 @@
             fd.append("ContentFile", document.getElementById("video").files[0]);
             fd.append("PrewievPhoto", document.getElementById("photo").files[0]);
 
-            const res = await fetch(`/api/content/Channel/${channelId}`, {
+            const res = await fetch(`/api/content/channel/${channelId}`, {
                 method: "POST",
                 body: fd
             });

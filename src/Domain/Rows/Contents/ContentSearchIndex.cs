@@ -21,6 +21,10 @@ public class ContentSearchIndex
     public string? ContentUrl { get; set; }
     public string? PreviewPhotoUrl { get; set; }
 
+    public int ColorR { get; set; }
+    public int ColorG { get; set; }
+    public int ColorB { get; set; }
+
     public long ViewsCount { get; set; }
 
     public ContentSearchIndex() { }
@@ -39,13 +43,13 @@ public class ContentSearchIndex
 
         if (content.ContentType == Common.Enums.ContentType.Video)
         {
+            ContentUrl = videoMeta.VideoUrl;
+            PreviewPhotoUrl = videoMeta.PhotoUrl;
+            
             DurationSeconds = videoMeta.DurationSeconds;
             AverageWatchRatio = videoMeta.AverageWatchRatio;
             AverageWatchTimeSeconds = videoMeta.AverageWatchTimeSeconds;
         }
-
-        ContentUrl = content.ContentUrl;
-        PreviewPhotoUrl = content.PreviewPhotoUrl;
 
         ViewsCount = content.ViewsCount;
     }

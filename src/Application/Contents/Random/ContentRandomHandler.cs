@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Application.Contents.Dtos;
 using Domain.Common.Interfaces.Db;
 using MediatR;
+using Application.Dtos;
 
 namespace Application.Contents.Random;
 
@@ -29,8 +30,9 @@ public class ContentRandomHandler : IRequestHandler<ContentRandomQuery, Result<C
             .Select(c => new ContentDto(
                 c.Id, c.ChannelId, c.CreatorId, c.Title, c.Slug, c.Description,
                 c.CreatedDate, c.ContentType.ToString(),
-                c.VideoMeta == null ? 0 : c.VideoMeta.DurationSeconds,
-                c.ContentUrl, c.PreviewPhotoUrl, c.Savers.Count, c.Likers.Count,
+                c.VideoMeta.DurationSeconds, c.VideoMeta.VideoUrl,
+                new PreviewPhotoDto(c.VideoMeta.PhotoUrl, c.VideoMeta.ColorR, c.VideoMeta.ColorG, c.VideoMeta.ColorB),
+                c.Savers.Count, c.Likers.Count,
                 c.Comments.Count, c.DisLikers.Count, c.ViewsCount))
             .ToArrayAsync(cancellationToken);
 

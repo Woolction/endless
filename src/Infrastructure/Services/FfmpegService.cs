@@ -6,8 +6,6 @@ namespace Infrastructure.Services;
 
 public class FfmpegService : IFfmpegService
 {
-    private const string FfmpegPath = "ffmpeg";
-
     public readonly IR2Service r2Service;
 
     public FfmpegService(IR2Service r2Service)
@@ -15,71 +13,13 @@ public class FfmpegService : IFfmpegService
         this.r2Service = r2Service;
     }
 
-    /*public async Task<string> UploadGeneratedVideos(string inputFile)
-    {
-        string tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-
-        Directory.CreateDirectory(tempDir);
-
-        try
-        {
-            var variants = new[]
-            {
-                new { Height = 360, Bitrate = 800000 },
-                new { Height = 480, Bitrate = 1400000 },
-                new { Height = 720, Bitrate = 2800000 }
-            };
-
-            foreach (var v in variants)
-            {
-                string playlist = Path.Combine(tempDir, $"{v.Height}.m3u8");
-
-                RunProcess(
-                    $"-i \"{inputFile}\" " +
-                    $"-vf scale=-2:{v.Height} " +
-                    "-c:v libx264 -preset fast -crf 23 " +
-                    "-c:a aac " +
-                    "-hls_time 4 " +
-                    "-hls_playlist_type vod " +
-                    $"-f hls \"{playlist}\""
-                );
-            }
-
-            string masterPath = Path.Combine(tempDir, "master.m3u8");
-
-            using (var writer = new StreamWriter(masterPath))
-            {
-                writer.WriteLine("#EXTM3U");
-
-                foreach (var v in variants)
-                {
-                    writer.WriteLine(
-                        $"#EXT-X-STREAM-INF:BANDWIDTH={v.Bitrate},RESOLUTION=1280x{v.Height}"
-                    );
-
-                    writer.WriteLine($"{v.Height}.m3u8");
-                }
-            }
-
-            string folderKey = $"videos/{Guid.NewGuid()}";
-
-            string url = r2Service.SaveVideo(tempDir, folderKey); //UploadDirectory(tempDir, folderKey);
-
-            return url; //$"{folderKey}/master.m3u8";
-        }
-        finally
-        {
-            Directory.Delete(tempDir, true);
-        }
-    }*/
-
-    public async Task<string> UploadGeneratedVideos(string inputFile)
+    public async Task<string> UploadGeneratedVideos(string videoPath, CancellationToken token = default)
     {
         string tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
         try
         {
-            await GenerateHlsVariants(inputFile, tempDir);
+            await GenerateHlsVariants(videoPath, tempDir, token);
 
             string folderKey = $"videos/{Guid.NewGuid()}";
 
@@ -94,15 +34,22 @@ public class FfmpegService : IFfmpegService
         }
     }
 
-    private async Task GenerateHlsVariants(string inputFile, string outputDir)
+    private async Task GenerateHlsVariants(string videoPath, string outputDir, CancellationToken token = default)
     {
         Directory.CreateDirectory(outputDir);
 
-        int height = await GetVideoHeight(inputFile);
+        // video height
+        int height = await GetVideoHeight(videoPath, token);
+
+        int result = await GetVideoFps(videoPath, token);
+
+        int fps = result > 60 ? 60 : result;
 
         var variants = new List<int>();
 
-        if (height >= 720)
+        if (height >= 1080)
+            variants.AddRange([360, 480, 720, 1080]);
+        else if (height >= 720)
             variants.AddRange([360, 480, 720]);
         else if (height >= 480)
             variants.AddRange([360, 480]);
@@ -121,10 +68,12 @@ public class FfmpegService : IFfmpegService
         string filters = "";
 
         for (int i = 0; i < count; i++)
-            filters += $"[v{i}]scale=-2:{variants[i]}[v{variants[i]}];";
+            filters += $"[v{i}]fps={fps},scale=-2:{variants[i]}[v{variants[i]}];";
 
         string maps = "";
         var streamMaps = new List<string>();
+
+        int gap = fps * 2;
 
         for (int i = 0; i < count; i++)
         {
@@ -132,11 +81,11 @@ public class FfmpegService : IFfmpegService
             maps += "-map 0:a:0 ";
 
             maps += $"-c:v:{i} libx264 -preset veryfast ";
-            maps += $"-b:v:{i} {GetBitrate(variants[i])} ";
+            maps += $"-b:v:{i} {GetBitrate(variants[i], fps)} ";
 
             maps += $"-c:a:{i} aac -b:a:{i} 128k ";
 
-            maps += "-g 48 -keyint_min 48 -sc_threshold 0 ";
+            maps += $"-g {gap} -keyint_min {gap} -sc_threshold 0 ";
 
             streamMaps.Add($"v:{i},a:{i}");
         }
@@ -144,7 +93,7 @@ public class FfmpegService : IFfmpegService
         string streamMap = string.Join(" ", streamMaps);
 
         string args =
-            $"-i \"{inputFile}\" " +
+            $"-i \"{videoPath}\" " +
             $"-filter_complex \"{split}{filters}\" " +
             maps +
             "-f hls " +
@@ -155,33 +104,47 @@ public class FfmpegService : IFfmpegService
             $"-var_stream_map \"{streamMap}\" " +
             $"{Path.Combine(outputDir, "stream_%v.m3u8")}";
 
-        await RunProcess(args);
+        await RunProcess(args, token: token);
     }
 
-    private async Task<int> GetVideoHeight(string filePath)
+    private async Task<int> GetVideoHeight(string videoPath, CancellationToken token = default)
     {
-        var psi = new ProcessStartInfo
-        {
-            FileName = "ffprobe",
-            Arguments = $"-v error -select_streams v:0 -show_entries stream=height -of csv=p=0 \"{filePath}\"",
-            RedirectStandardOutput = true,
-            UseShellExecute = false
-        };
-
-        using var process = Process.Start(psi) ?? throw new Exception("failed to start ffprobe");
-
-        string output = process.StandardOutput.ReadToEnd();
-
-        await process.WaitForExitAsync();
-
+        string output = await RunProcess(
+            $"-v error -select_streams v:0 -show_entries stream=height -of csv=p=0 \"{videoPath}\"",
+            "ffprobe", token);
         return int.Parse(output.Trim());
     }
 
-    private async Task RunProcess(string args)
+    private async Task<int> GetVideoFps(string videoPath, CancellationToken token = default)
+    {
+        string output = await RunProcess(
+            $"-v error -select_streams v:0 " +
+            $"-show_entries stream=r_frame_rate " +
+            $"-of default=noprint_wrappers=1:nokey=1 " +
+            $"\"{videoPath}\"",
+            "ffprobe",
+            token);
+
+        string value = output.Trim();
+
+        if (value.Contains('/'))
+        {
+            string[] parts = value.Split('/');
+
+            double numerator = double.Parse(parts[0]);
+            double denominator = double.Parse(parts[1]);
+
+            return (int)Math.Round(numerator / denominator);
+        }
+
+        return (int)Math.Round(double.Parse(value));
+    }
+
+    public async Task<string> RunProcess(string args, string fileName = "ffmpeg", CancellationToken token = default)
     {
         var psi = new ProcessStartInfo
         {
-            FileName = FfmpegPath,
+            FileName = fileName,
             Arguments = args,
             RedirectStandardError = true,
             RedirectStandardOutput = true,
@@ -191,44 +154,63 @@ public class FfmpegService : IFfmpegService
 
         using var process = Process.Start(psi) ?? throw new Exception("failed to start ffmpeg");
 
-        await process.WaitForExitAsync();
+        var errorTask = process.StandardError.ReadToEndAsync(token);
+        var outputTask = process.StandardOutput.ReadToEndAsync(token);
 
-        var error = process.StandardError.ReadToEnd();
+        await process.WaitForExitAsync(token);
+
+        string error = await errorTask;
+        string output = await outputTask;
 
         if (process.ExitCode != 0)
-            throw new Exception($"ffmpeg failed with code: {process.ExitCode}\n{process.StandardError}");
+            throw new Exception($"{fileName} failed with code: {process.ExitCode}\n{error}");
+
+        Console.WriteLine($"{fileName} finished process: {output}");
+
+        return output;
     }
 
-
-    private string GetBitrate(int height)
+    public async Task<int> GetVideoDuration(string videoPath, CancellationToken token = default)
     {
-        return height switch
-        {
-            360 => "800k",
-            480 => "1400k",
-            720 => "2800k",
-            _ => "800k"
-        };
-    }
-
-    public async Task<int> GetVideoDuration(string filePath)
-    {
-        var psi = new ProcessStartInfo
-        {
-            FileName = "ffprobe",
-            Arguments = $"-v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 \"{filePath}\"",
-            RedirectStandardOutput = true,
-            UseShellExecute = false
-        };
-
-        using var process = Process.Start(psi) ?? throw new Exception("failed to start ffprobe");
-
-        string output = process.StandardOutput.ReadToEnd();
-
-        await process.WaitForExitAsync();
+        string output = await RunProcess(
+            $"-v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 \"{videoPath}\"",
+            "ffprobe", token);
 
         double seconds = double.Parse(output, CultureInfo.InvariantCulture);
 
         return (int)Math.Round(seconds);
+    }
+
+    public async Task<string> GetPhotoFromVideo(string videoPath, string outputPath = "/storage/images/previewPhoto.jpeg", int timeSeconds = 5, CancellationToken token = default)
+    {
+        string finalOutput = Path.Combine(
+            Path.GetDirectoryName(outputPath)!,
+            $"{Guid.NewGuid()}{Path.GetExtension(outputPath)}");
+
+        await RunProcess(
+            $"-i \"{videoPath}\" -ss {timeSeconds} -frames:v 1 \"{finalOutput}\"", token: token);
+
+        return finalOutput;
+    }
+
+    private string GetBitrate(int height, int fps)
+    {
+        double baseRate = height switch
+        {
+            360 => 800,
+            480 => 1400,
+            720 => 2800,
+            1080 => 6000,
+            _ => 800
+        };
+
+        double factor = fps switch
+        {
+            <= 30 => 1.0,
+            <= 60 => 1.5,
+            _ => 1.5
+        };
+
+        return $"{(int)(baseRate * factor)}k";
     }
 }

@@ -5,6 +5,7 @@ using Application.Contents.Dtos;
 using Domain.Common.Interfaces.Db;
 using Domain.Entities;
 using MediatR;
+using Application.Dtos;
 
 namespace Application.Contents.Update;
 
@@ -42,8 +43,7 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
                 SaversCount = content.Savers.Count,
                 LikersCount = content.Likers.Count,
                 CommentsCount = content.Comments.Count,
-                DisLikersCount = content.DisLikers.Count,
-                ViewsCount = content.ViewsCount
+                DisLikersCount = content.DisLikers.Count
             })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -91,10 +91,9 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
             content.c.Id, content.c.ChannelId, content.c.CreatorId,
             content.c.Title, content.c.Slug, content.c.Description,
             content.c.CreatedDate, content.c.ContentType.ToString(),
-            content.c.VideoMeta == null ? 0 : content.c.VideoMeta.DurationSeconds,
-            content.c.ContentUrl, content.c.PreviewPhotoUrl, content.SaversCount,
-            content.LikersCount, content.CommentsCount, content.DisLikersCount,
-            content.ViewsCount);
+            content.c.VideoMeta.DurationSeconds, content.c.VideoMeta.VideoUrl,
+            new PreviewPhotoDto(content.c.VideoMeta.PhotoUrl, content.c.VideoMeta.ColorR, content.c.VideoMeta.ColorG, content.c.VideoMeta.ColorB),
+            content.SaversCount, content.LikersCount, content.CommentsCount, content.DisLikersCount, content.c.ViewsCount);
 
         return Result<ContentDto>.Success(200, contentDto);
     }

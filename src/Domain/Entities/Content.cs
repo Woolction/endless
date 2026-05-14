@@ -19,10 +19,7 @@ public class Content
     public ContentType ContentType { get; set; } = ContentType.Video;
     public ContentStatusType StatusType { get; set; } = ContentStatusType.None;
 
-    public VideoMetaData? VideoMeta { get; set; }
-
-    public string? ContentUrl { get; set; }
-    public string? PreviewPhotoUrl { get; set; }
+    public VideoMetaData VideoMeta { get; set; } = new();
 
     public long ViewsCount { get; set; }
 

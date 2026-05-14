@@ -85,7 +85,12 @@ public class ContentRepository : IContentRepository
                     .Date(d => d.CreatedDate)
                     .LongNumber(l => l.ViewsCount)
                     .IntegerNumber(i => i.ContentType)
+                    .IntegerNumber(i => i.ColorR)
+                    .IntegerNumber(i => i.ColorG)
+                    .IntegerNumber(i => i.ColorB)
                     .IntegerNumber(i => i.DurationSeconds)
+                    .FloatNumber(i => i.AverageWatchRatio)
+                    .IntegerNumber(i => i.AverageWatchTimeSeconds)
                     .Text("description", t => t
                         .Analyzer("smart_analyzer")
                         .SearchAnalyzer("smart_search"))

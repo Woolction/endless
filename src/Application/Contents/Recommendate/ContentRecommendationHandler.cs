@@ -5,6 +5,7 @@ using Application.Contents.Dtos;
 using Domain.Common.Interfaces.Db;
 using Domain.Entities;
 using MediatR;
+using Application.Dtos;
 
 namespace Application.Contents.Recommendate;
 
@@ -53,7 +54,9 @@ public class ContentRecommendationHandler : IRequestHandler<ContentRecommendatio
             .Where(uG => uG.UserId == query.UserId)
             .ToArrayAsync(cancellationToken);
 
-        GenreInfo genreInfo = await context.GenreInfos.AsNoTracking().FirstAsync(cancellationToken: cancellationToken);
+        GenreInfo genreInfo = await context.GenreInfos
+            .AsNoTracking()
+            .FirstAsync(cancellationToken: cancellationToken);
 
         IEnumerable<ContentRecoScore> recommended = candidates
             .Select(c => new ContentRecoScore(
@@ -78,12 +81,11 @@ public class ContentRecommendationHandler : IRequestHandler<ContentRecommendatio
 
         ContentRecoDto[] result = combined
             .Select(c => new ContentRecoDto(
-                c.Id, c.ChannelId, c.CreatorId,
-                c.Title, c.Slug, c.Description,
+                c.Id, c.ChannelId, c.CreatorId, c.Title, c.Slug, c.Description,
                 c.CreatedDate, c.ContentType.ToString(), System.Random.Shared.NextDouble(),
-                c.VideoMeta == null ? 0 : c.VideoMeta.DurationSeconds, c.ContentUrl,
-                c.PreviewPhotoUrl, c.Savers.Count, c.Likers.Count, c.Comments.Count,
-                c.DisLikers.Count, c.ViewsCount))
+                c.VideoMeta.DurationSeconds, c.VideoMeta.VideoUrl, new PreviewPhotoDto(
+                    c.VideoMeta.PhotoUrl, c.VideoMeta.ColorR, c.VideoMeta.ColorG, c.VideoMeta.ColorB),
+                c.Savers.Count, c.Likers.Count, c.Comments.Count, c.DisLikers.Count, c.ViewsCount))
             .OrderBy(x => x.RandomKey)
             .ToArray();
 
