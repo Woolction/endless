@@ -30,7 +30,7 @@ public class ContentController : ControllerBase
         this.mediator = mediator;
     }
 
-    [HttpPost("Channel/{ChannelId}")]
+    [HttpPost("channel/{ChannelId}")]
     [Authorize(Policy = nameof(UserRole.Creator))]
     public async Task<ActionResult<ContentDto>> CreateContent([FromRoute] Guid? ChannelId, [FromForm] ContentCreateRequest request)
     {
@@ -129,7 +129,7 @@ public class ContentController : ControllerBase
         return Ok(new ContentUrlDto(result.Data.ContentUrl));
     }
 
-    [HttpGet]
+    [HttpGet("random")]
     public async Task<ActionResult<ContentRecoDto[]>> GetRandomContent()
     {
         Result<ContentDto[]> randomContents = await mediator.Send(
@@ -138,7 +138,7 @@ public class ContentController : ControllerBase
         return Ok(randomContents);
     }
 
-    [HttpGet("Recommendations")]
+    [HttpGet("recommendation")]
     [Authorize(Policy = nameof(UserRole.User))]
     public async Task<ActionResult<ContentRecoDto[]>> GetContentForRecommendation()
     {
@@ -157,7 +157,7 @@ public class ContentController : ControllerBase
         return Ok(result.Data);
     }
 
-    [HttpGet("Search")]
+    [HttpGet("search")]
     public async Task<ActionResult<SearchedContentDto[]>> GetContentByName([FromQuery] ContentSearchQuery query)
     {
         Result<SearchedContentDto[]> result = await mediator.Send(query);
