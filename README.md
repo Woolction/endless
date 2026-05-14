@@ -58,7 +58,7 @@ Audience=EndlessUsers
 ExpireMinutes=30
 ```
 #### 3. Obtain a license:
-obtain a license (community) from [SixLabors](https://sixlabors.com/pricing) for ImageSharp or change version to 3.1.11 in Domain.csproj
+obtain a license (community) from [SixLabors](https://sixlabors.com/pricing) and put in root for ImageSharp or change version to 3.1.11 in Domain.csproj
 ```.csproj
 from => 
   <PackageReference Include="SixLabors.ImageSharp" Version="4.0.0" />
