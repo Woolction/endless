@@ -21,9 +21,9 @@ public class ContentSearchIndex
     public string? ContentUrl { get; set; }
     public string? PreviewPhotoUrl { get; set; }
 
-    public int ColorR { get; set; }
-    public int ColorG { get; set; }
-    public int ColorB { get; set; }
+    public int R { get; set; }
+    public int G { get; set; }
+    public int B { get; set; }
 
     public long ViewsCount { get; set; }
 
@@ -45,7 +45,7 @@ public class ContentSearchIndex
         {
             ContentUrl = videoMeta.VideoUrl;
             PreviewPhotoUrl = videoMeta.PhotoUrl;
-            
+
             DurationSeconds = videoMeta.DurationSeconds;
             AverageWatchRatio = videoMeta.AverageWatchRatio;
             AverageWatchTimeSeconds = videoMeta.AverageWatchTimeSeconds;

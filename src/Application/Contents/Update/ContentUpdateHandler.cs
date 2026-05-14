@@ -74,7 +74,7 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
 
         content.c.VideoMeta.VideoUrl = videoUrl;
         content.c.VideoMeta.PhotoUrl = photoUrl;
-        
+
         if (videoPath != null)
         {
             content.c.VideoMeta.DurationSeconds = await ffmpegService.GetVideoDuration(videoPath);
@@ -92,7 +92,7 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
             content.c.Title, content.c.Slug, content.c.Description,
             content.c.CreatedDate, content.c.ContentType.ToString(),
             content.c.VideoMeta.DurationSeconds, content.c.VideoMeta.VideoUrl,
-            new PreviewPhotoDto(content.c.VideoMeta.PhotoUrl, content.c.VideoMeta.ColorR, content.c.VideoMeta.ColorG, content.c.VideoMeta.ColorB),
+            new PreviewPhotoDto(content.c.VideoMeta.PhotoUrl, content.c.VideoMeta.R, content.c.VideoMeta.G, content.c.VideoMeta.B),
             content.SaversCount, content.LikersCount, content.CommentsCount, content.DisLikersCount, content.c.ViewsCount);
 
         return Result<ContentDto>.Success(200, contentDto);

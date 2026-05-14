@@ -18,9 +18,9 @@ public class VideoMetaData
 
     public string PhotoUrl { get; set; } = string.Empty;
 
-    public int ColorR { get; set; }
-    public int ColorG { get; set; }
-    public int ColorB { get; set; }
+    public int R { get; set; }
+    public int G { get; set; }
+    public int B { get; set; }
 
     public async Task SetAverageColor(string photoPath, CancellationToken token = default)
     {
@@ -51,11 +51,11 @@ public class VideoMetaData
             }
         }
 
-        ColorR = (int)(r / count);
-        ColorG = (int)(g / count);
-        ColorB = (int)(b / count);
+        R = (int)(r / count);
+        G = (int)(g / count);
+        B = (int)(b / count);
 
-        Console.WriteLine($"rgb({ColorR} {ColorG} {ColorB}) for {Path.GetFileNameWithoutExtension(photoPath)} and ContentId: {ContentId}");
+        Console.WriteLine($"rgb({R} {G} {B}) for {Path.GetFileNameWithoutExtension(photoPath)} and ContentId: {ContentId}");
     }
 
     public async Task<(int R, int G, int B)> GetAverageColor(string photoPath, CancellationToken token = default)

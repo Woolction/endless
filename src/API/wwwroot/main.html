@@ -15,53 +15,53 @@
 
         <!-- TOP NAVBAR -->
         <header class="navbar">
-        
+
             <div class="navbar-left">
-        
+
                 <button class="menu-button" id="menuButton">
                     ☰
                 </button>
-        
+
                 <div class="logo">
                     Endless
                 </div>
-        
+
             </div>
-        
+
         </header>
-        
+
         <aside class="sidebar" id="sidebar">
-        
+
             <nav class="menu">
-        
+
                 <div class="menu-item">
                     <span class="icon">-</span>
                     <span class="text">Home</span>
                 </div>
-        
+
                 <div class="menu-item">
                     <span class="icon">-</span>
                     <span class="text">History</span>
                 </div>
-        
+
                 <div class="menu-item">
                     <span class="icon">-</span>
                     <span class="text">Channels</span>
                 </div>
-        
+
                 <div class="menu-item">
                     <span class="icon">-</span>
                     <span class="text">Trending</span>
                 </div>
-        
+
             </nav>
-        
+
         </aside>
-        
+
         <main class="main" id="main">
-        
+
             <div class="videos-grid" id="grid"></div>
-        
+
         </main>
 
     </div>
@@ -81,7 +81,7 @@
 
                 // MOBILE
                 if (mobile) {
-                    
+
                     sidebar.classList.toggle("mobile-show");
                     return;
                 }
@@ -145,8 +145,7 @@
                     credentials: "include"
                 });
             }
-            else 
-            {
+            else {
                 res = await fetch("/api/content/recommendation", {
                     credentials: "include"
                 });
@@ -190,7 +189,7 @@
 
                 function applyColor() {
 
-                    rgbaColor = `rgba(${v.photo.colorR}, ${v.photo.colorG}, ${v.photo.colorB}, 0.25)`;
+                    rgbaColor = `rgba(${v.photo.R}, ${v.photo.G}, ${v.photo.B}, 0.25)`;
 
                     card.dataset.color = rgbaColor;
                 }
@@ -217,7 +216,7 @@
                 grid.appendChild(card);
             });
         }
-        
+
         window.addEventListener("DOMContentLoaded", () => {
             SetSidebar();
             fetchVideos();

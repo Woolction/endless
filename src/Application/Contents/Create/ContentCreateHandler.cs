@@ -104,7 +104,7 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
             content.Title, content.Slug, content.Description,
             content.CreatedDate, content.ContentType.ToString(), 0,
             content.VideoMeta.VideoUrl, new PreviewPhotoDto(
-                content.VideoMeta.PhotoUrl, content.VideoMeta.ColorR, content.VideoMeta.ColorG, content.VideoMeta.ColorB),
+                content.VideoMeta.PhotoUrl, content.VideoMeta.R, content.VideoMeta.G, content.VideoMeta.B),
             0, 0, 0, 0, 0));
     }
 }
