@@ -57,13 +57,23 @@ Issuer=Endless
 Audience=EndlessUsers
 ExpireMinutes=30
 ```
-#### 3. Start Docker compose:
+#### 3. Obtain a license:
+obtain a license (community) from [SixLabors](https://sixlabors.com/pricing) for ImageSharp or change version to 3.1.11 in Domain.csproj
+```.csproj
+from => 
+  <PackageReference Include="SixLabors.ImageSharp" Version="4.0.0" />
+to =>
+  <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
+```
+#### 4. Start Docker compose:
 ```bash
 docker compose up --build
 ```
-#### 4. Open API
+#### 5. Open API
 ```
 - api docs: http://localhost:5000/scalar/v1
+
+- main video: http://localhost:5000/main.html
 - upload video: http://localhost:5000/upload.html
 - watch videos: http://localhost:5000/watch.html
 ```
