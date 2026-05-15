@@ -73,7 +73,7 @@ docker compose up --build
 ```
 - api docs: http://localhost:5000/scalar/v1
 
-- main video: http://localhost:5000/main.html
+- main: http://localhost:5000
 - upload video: http://localhost:5000/upload.html
 - watch videos: http://localhost:5000/watch.html
 ```
