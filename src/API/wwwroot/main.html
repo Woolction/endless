@@ -136,17 +136,16 @@
             if (res.status === 401) {
 
                 await refreshToken();
-            }
 
-            // 404 => fallback to random
-            if (res.status === 404) {
-
-                res = await fetch("/api/content/random", {
+                res = await fetch("/api/content/recommendation", {
                     credentials: "include"
                 });
             }
-            else {
-                res = await fetch("/api/content/recommendation", {
+
+            // 404 => fallback to random
+            if (res.status === 404 || res.status === 401) {
+
+                res = await fetch("/api/content/random", {
                     credentials: "include"
                 });
             }
