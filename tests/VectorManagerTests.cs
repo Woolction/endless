@@ -1,5 +1,5 @@
-﻿using Infrastructure.Managers;
-using Microsoft.Extensions.Hosting.Internal;
+﻿using Microsoft.Extensions.Hosting.Internal;
+using Infrastructure.Managers;
 
 namespace Tests;
 
