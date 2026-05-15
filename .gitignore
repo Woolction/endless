@@ -58,3 +58,4 @@ appsettings.Development.json
 /storage
 *.env
 *.lic
+*.lscache
