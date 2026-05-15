@@ -44,7 +44,7 @@ public class InteractionService : IInteractionService
         }
 
         VectorManager.Normalize(
-            userVectors, Count, x => x.Value, (x, value) => x.Value = value);
+            userVectors, Count, x => x.Value, (i, value) => userVectors[i].Value = value);
     }
 
     private void UpdateContentAudienceVector(UserGenreVector[] userVectors, ContentGenreVector[] contentVectors, float weight, int Count)
@@ -55,7 +55,7 @@ public class InteractionService : IInteractionService
         }
 
         VectorManager.Normalize(
-            contentVectors, Count, x => x.AudienceVector, (x, value) => x.AudienceVector = value);
+            contentVectors, Count, x => x.AudienceVector, (i, value) => contentVectors[i].AudienceVector = value);
     }
 
     private void UpdateFinalContentVector(ContentGenreVector[] contentVectors, int Count)
@@ -68,12 +68,12 @@ public class InteractionService : IInteractionService
         }
 
         VectorManager.Normalize(
-            contentVectors, Count, x => x.FinalVector, (x, value) => x.FinalVector = value);
+            contentVectors, Count, x => x.FinalVector, (i, value) => contentVectors[i].FinalVector = value);
     }
 
     private void UpdateWatchStats(Content content, int watchTimeSeconds)
     {
-        VideoMetaData videoMeta = content.VideoMeta!; // for test
+        VideoMetaData videoMeta = content.VideoMeta; 
 
         content.ViewsCount++;
 

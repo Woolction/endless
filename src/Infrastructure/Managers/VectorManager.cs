@@ -43,7 +43,7 @@ public static class VectorManager
         return sum;
     }
 
-    public static void Normalize<T>(T[] v, long count, Func<T, float> getter, Action<T, float> setter)
+    public static void Normalize<T>(T[] v, long count, Func<T, float> getter, Action<int, float> setter)
     {
         float mag = Magnitude(v, getter);
         if (mag == 0) return;
@@ -51,7 +51,7 @@ public static class VectorManager
         for (int i = 0; i < count; i++)
         {
             var value = getter(v[i]);
-            setter(v[i], value / mag);
+            setter(i, value / mag);
         }
     }
 }
