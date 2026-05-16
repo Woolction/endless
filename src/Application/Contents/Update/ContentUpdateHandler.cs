@@ -6,6 +6,9 @@ using Domain.Common.Interfaces.Db;
 using Domain.Entities;
 using MediatR;
 using Application.Dtos;
+using Application.Contents.Create;
+using RabbitMQ.Client;
+using Domain.Rows.Contents;
 
 namespace Application.Contents.Update;
 
@@ -14,14 +17,14 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
     private readonly ILogger<ContentUpdateHandler> logger;
     private readonly IAppDbContext context;
 
-    private readonly IFfmpegService ffmpegService;
+    private readonly ContentUploadPublisher publisher;
     private readonly IR2Service r2Service;
-    public ContentUpdateHandler(IAppDbContext context, ILogger<ContentUpdateHandler> logger, IFfmpegService ffmpegService, IR2Service r2Service)
+    public ContentUpdateHandler(IAppDbContext context, ILogger<ContentUpdateHandler> logger, ContentUploadPublisher publisher, IR2Service r2Service)
     {
         this.context = context;
         this.logger = logger;
 
-        this.ffmpegService = ffmpegService;
+        this.publisher = publisher;
         this.r2Service = r2Service;
     }
 
@@ -50,37 +53,26 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
         if (content == null)
             return Result<ContentDto>.Failure(404, "Content not found");
 
-        string videoUrl = null!;
-        string videoPath = null!;
+        string? videoPath = null;
+        string? photoPath = null;
 
         if (request.ContentFile != null && request.ContentFile.Length != 0)
         {
             videoPath = await r2Service.SaveFormFileAsync(request.ContentFile, "Video", token: cancellationToken);
-            videoUrl = await ffmpegService.UploadGeneratedVideos(videoPath, cancellationToken);
         }
-
-        string photoUrl = null!;
 
         if (request.PrewievPhoto != null && request.PrewievPhoto.Length != 0)
         {
-            string photoPath = await r2Service.SaveFormFileAsync(request.PrewievPhoto, "Images", ".jpeg", cancellationToken);
-            photoUrl = r2Service.SaveImage(photoPath);
-
-            File.Delete(photoPath);
+            photoPath = await r2Service.SaveFormFileAsync(request.PrewievPhoto, "Images", ".jpeg", cancellationToken);
         }
 
         content.c.Title = request.Title;
         content.c.ContentType = request.ContentType;
 
-        content.c.VideoMeta.VideoUrl = videoUrl;
-        content.c.VideoMeta.PhotoUrl = photoUrl;
+        var message = new VideoUploadMessage(
+            request.ContentId, videoPath, photoPath);
 
-        if (videoPath != null)
-        {
-            content.c.VideoMeta.DurationSeconds = await ffmpegService.GetVideoDuration(videoPath);
-
-            File.Delete(videoPath);
-        }
+        await publisher.PublishAsync(message, cancellationToken);
 
         await context.SaveChangesAsync();
 

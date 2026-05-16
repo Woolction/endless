@@ -6,10 +6,10 @@ using RabbitMQ.Client;
 
 namespace Application.Contents.Create;
 
-public class ContentCreatePublisher
+public class ContentUploadPublisher
 {
     private readonly IRabbitMqConnector connection;
-    public ContentCreatePublisher(IRabbitMqConnector connection)
+    public ContentUploadPublisher(IRabbitMqConnector connection)
     {
         this.connection = connection;
     }

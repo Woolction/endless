@@ -186,7 +186,7 @@ public static class ProgramPipeline
         builder.Services.AddSingleton<IR2Service, R2Service>();
         builder.Services.AddSingleton<IFfmpegService, FfmpegService>();
 
-        builder.Services.AddSingleton<ContentCreatePublisher>();
+        builder.Services.AddSingleton<ContentUploadPublisher>();
 
         //      Transient
         builder.Services.AddTransient<IConsumer, VideoUploadingConsumer>();

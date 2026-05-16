@@ -16,10 +16,10 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
 {
     private readonly IAppDbContext context;
     private readonly ILogger<ContentCreateHandler> logger;
-    private readonly ContentCreatePublisher publisher;
+    private readonly ContentUploadPublisher publisher;
     private readonly IR2Service r2Service;
 
-    public ContentCreateHandler(IAppDbContext context, ContentCreatePublisher publisher, IR2Service r2Service, ILogger<ContentCreateHandler> logger)
+    public ContentCreateHandler(IAppDbContext context, ContentUploadPublisher publisher, IR2Service r2Service, ILogger<ContentCreateHandler> logger)
     {
         this.context = context;
 
