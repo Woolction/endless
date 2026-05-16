@@ -125,6 +125,29 @@
             });
         }
 
+        function formatDuration(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+
+            return `${min}:${sec.toString().padStart(2, "0")}`;
+        }
+
+        function utcDate(date) 
+        {
+            const videoDate = new Date(date);
+            const now = new Date();
+
+            
+            if (now.getUTCFullYear() === videoDate.getUTCFullYear() &&
+                now.getUTCMonth() === videoDate.getUTCMonth() &&
+                now.getUTCDate() === videoDate.getUTCDate()) {
+
+                return videoDate.toLocaleTimeString();
+            }
+
+            return videoDate.tolocaleDateString();
+        }
+
         async function fetchVideos() {
 
             let res = await fetch("/api/content/recommendation", {
@@ -210,7 +233,11 @@
                 const title = v.title.length > 72 ? v.title.substring(0, 72) + "..." : v.title;
                 
                 card.innerHTML = `
-                <img class="photo-preview" src="${v.photo.url}" alt="${title}"/>
+                <div class="thumbnail-wrapper">
+                    <img class="photo-preview" src="${v.photo.url}" alt="${title}"/> 
+
+                    <div class="video-duration">${formatDuration(v.durationSeconds)}</div>
+                </div>
 
                 <div class="video-info">
                     <img class="channel-avatar"/>
@@ -227,7 +254,7 @@
                         </div>
 
                         <div class="video-stats">
-                            ${v.viewsCount} views • ${v.createdDate}         
+                            ${v.viewsCount} views • ${utcDate(v.createdDate)}         
                         </div>
                     </div>
                             

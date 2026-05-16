@@ -25,7 +25,7 @@ using System.Text;
 using Application;
 using RabbitMQ.Client;
 
-namespace API;
+namespace API.Extensions;
 
 public static class ProgramPipeline
 {
@@ -47,6 +47,9 @@ public static class ProgramPipeline
         {
             o.MultipartBodyLengthLimit = long.MaxValue;
         });
+
+        // SignalR
+        builder.Services.AddSignalR();
 
         // Logging
         builder.Logging.ClearProviders();
