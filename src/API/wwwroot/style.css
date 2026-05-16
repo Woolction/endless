@@ -223,6 +223,22 @@ body {
     transform: scale(1.04);
 }
 
+.channel-name {
+    display: inline-block;
+
+    width: fit-content;
+
+    cursor: pointer;
+    margin-top: 6px;
+    padding-bottom: 6px;
+    font-size: 14px;
+    color: #777;
+}
+
+.channel-name:hover {
+    color: #b8b7b7;
+}
+
 .video-meta {
     display: flex;
     flex-direction: column;
@@ -251,6 +267,12 @@ body {
     -webkit-box-orient: vertical;
 }
 
+.video-stats {
+    margin-top: auto;
+    color: #777;
+    font-size: 13px;
+}
+
 .video-menu-btn {
     position: absolute;
 
@@ -275,25 +297,56 @@ body {
     background: #505050;
 }
 
-.channel-name {
-    display: inline-block;
+.video-menu {
+    position: fixed;
+
+    width: 180px;
+
+    background: rgba(20, 20, 20, 0.8);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 251, 255, 0.1);
+
+    border-radius: 14px;
     
-    width: fit-content;
+    padding: 6px;
     
-    cursor: pointer;
-    margin-top: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    
+    transform: scale(0.8) translateY(12px);
+    pointer-events: none;
+    opacity: 0;
+
+    transition: opacity 0.2s ease, transfrom 0.2s ease;
+
+    z-index: 9999;
+}
+
+.video-menu.open {
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.video-menu-item {
+    padding: 10px 12px;
+
     font-size: 14px;
-    color: #777;
+
+    color: #eee;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition: background 0.15s;
 }
 
-.channel-name:hover {
-    color: #b8b7b7;
+.video-menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
 }
 
-.video-stats {
-    margin-top: auto;
-    color: #777;
-    font-size: 13px;
+.video-menu-item.danger {
+    color: #ff4d4d;
 }
 
 /* TABLET */

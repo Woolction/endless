@@ -155,13 +155,59 @@
 
             grid.innerHTML = "";
 
+            //create video menu
+
+            const menu = document.createElement("div");
+            let currentButton = null;
+            let currentVideo = null;
+
+            menu.className = "video-menu";
+
+            menu.innerHTML = `
+            <div class="video-menu-item" data-action="save">Save</div>
+            <div class="video-menu-item" data-action="share">Share</div>
+            <div class="video-menu-item" data-action="playlist">Playlist</div>
+            <div class="video-menu-item danger" data-action="report">Report</div>`;
+
+            menu.addEventListener("click", (e) => {
+                e.stopPropagation();
+                
+                const item = e.target.closest(".video-menu-item");
+                
+                if (!item)
+                    return;
+
+                const action = item.dataset.action;
+
+                switch (action) {
+                    case "save":
+                        console.log("Save video:", currentVideo.contentId);
+
+                        break;
+                    case "share":
+                        console.log("Share video:", currentVideo.title);
+
+                        break;
+                    case "playlist":
+                        console.log("Playlist:", currentVideo);
+
+                        break;
+                    case "report":
+                        console.log("Report:", currentVideo.contentId);
+
+                        break;
+                }
+            });
+
+            document.body.appendChild(menu);
+
             data.forEach(v => {
 
                 const card = document.createElement("div");
 
                 card.className = "video-card";
 
-                const title = v.title.length > 64 ? v.title.substring(0, 64) + "..." : v.title;
+                const title = v.title.length > 72 ? v.title.substring(0, 72) + "..." : v.title;
                 
                 card.innerHTML = `
                 <img class="photo-preview" src="${v.photo.url}" alt="${title}"/>
@@ -189,14 +235,48 @@
 
                 </div>`;
 
-                card.addEventListener("click", () => {
-                    location.href = `/watch.html?id=${v.contentId}`;
-                })
-
                 card.querySelector(".video-menu-btn").addEventListener("click", (e) => {
                     e.stopPropagation();
 
-                    console.log("...");
+                    const button = e.currentTarget;
+
+                    if (menu.classList.contains("open") && currentButton === button) {
+                        
+                        menu.classList.remove("open");
+                        currentButton = null;
+                        currentVideo = null;
+
+                        return;
+                    }
+
+                    currentButton = button;
+                    currentVideo = v;
+
+                    const rect = button.getBoundingClientRect();
+
+                    menu.style.visibility = "hidden";
+                    menu.classList.add("open");
+
+                    const spaceBelow = window.innerHeight - rect.bottom;
+
+                    let top;
+
+                    if (spaceBelow < menu.offsetHeight + 10) {
+                        top = rect.top - menu.offsetHeight - 6;
+                    } else {
+                        top = rect.bottom + 6;
+                    }
+
+                    menu.style.top = `${top}px`;
+                    menu.style.left = `${rect.right - 160}px`;
+
+                    menu.style.visibility = "visible";
+                });
+
+                document.addEventListener("click", () => {
+                    menu.classList.remove("open");
+                    currentButton = null;
+                    currentVideo = null;
                 });
 
                 card.querySelector(".channel-avatar").addEventListener("click", (e) => {
@@ -210,6 +290,10 @@
 
                     console.log("...");
                 });
+
+                card.addEventListener("click", () => {
+                    location.href = `/watch.html?id=${v.contentId}`;
+                })
 
                 const img = card.querySelector(".photo-preview");
 
