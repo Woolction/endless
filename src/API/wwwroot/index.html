@@ -162,24 +162,54 @@
                 card.className = "video-card";
 
                 const title = v.title.length > 64 ? v.title.substring(0, 64) + "..." : v.title;
-
+                
                 card.innerHTML = `
-                    <img 
-                        class="photo-preview"
-                        src="${v.photo.url}"
-                        alt="${title}"
-                    />
+                <img class="photo-preview" src="${v.photo.url}" alt="${title}"/>
 
-                    <div class="video-info">
-                        <div class="video-title">
-                            ${title}
+                <div class="video-info">
+                    <img class="channel-avatar"/>
+
+                    <div class="video-meta">
+                        <div class="video-top-row">
+                            <div class="video-title">
+                                ${title}
+                            </div>
                         </div>
-                    </div>`
-                    ;
 
-                card.onclick = () => {
+                        <div class="channel-name">
+                            Endless
+                        </div>
+
+                        <div class="video-stats">
+                            ${v.viewsCount} views • ${v.createdDate}         
+                        </div>
+                    </div>
+                            
+                    <button class="video-menu-btn">⋮</button>
+
+                </div>`;
+
+                card.addEventListener("click", () => {
                     location.href = `/watch.html?id=${v.contentId}`;
-                };
+                })
+
+                card.querySelector(".video-menu-btn").addEventListener("click", (e) => {
+                    e.stopPropagation();
+
+                    console.log("...");
+                });
+
+                card.querySelector(".channel-avatar").addEventListener("click", (e) => {
+                    e.stopPropagation();
+
+                    console.log("...");
+                });
+                
+                card.querySelector(".channel-name").addEventListener("click", (e) => {
+                    e.stopPropagation();
+
+                    console.log("...");
+                });
 
                 const img = card.querySelector(".photo-preview");
 
@@ -187,7 +217,7 @@
 
                 function applyColor() {
 
-                    rgbaColor = `rgba(${v.photo.r}, ${v.photo.g}, ${v.photo.b}, 0.25)`;
+                    rgbaColor = `rgba(${v.photo.r}, ${v.photo.g}, ${v.photo.b}, 0.3)`;
 
                     card.dataset.color = rgbaColor;
                 }
