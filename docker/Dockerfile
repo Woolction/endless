@@ -5,6 +5,8 @@ COPY . .
 
 RUN dotnet restore 
 
+RUN ls -R /app
+
 FROM build AS test-runner
 RUN dotnet test tests/tests.csproj -c Release --no-restore
 
