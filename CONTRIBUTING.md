@@ -61,4 +61,4 @@ git push origin feat/your-feature-name
 * **​Contributor Badge:** You will get a unique `Core Developer` or `Contributor` badge on the Endless platform.
 * **​Governance:** Significant contributors will have a vote in future project decisions.
 * **​Mentions:** You will be mentioned in the project history.
-* **Monetization:** You will receive 75% - 90%.
+* **Monetization:** You will receive 75% - 90%. [Learn more about Monetization.](https://github.com/Woolction/endless/wiki/Monetization-in-Endless)
