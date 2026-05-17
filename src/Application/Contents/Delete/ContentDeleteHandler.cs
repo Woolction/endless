@@ -35,10 +35,29 @@ public class ContentDeleteHandler : IRequestHandler<ContentDeleteCommand, Result
         }
 
         Content? content = await context.Contents
+            .Include(c => c.VideoMeta)
             .FirstOrDefaultAsync(c => c.Id == cmd.ContentId, cancellationToken: cancellationToken);
 
         if (content == null)
             return Result<Null>.Failure(404, "Content not found");
+
+        // for local storage
+        string path = content.VideoMeta.VideoUrl;
+
+        if (!string.IsNullOrEmpty(path))
+        {
+            string? directoryName = Path.GetDirectoryName(path);
+
+            if (directoryName != null)
+                Directory.Delete(directoryName, true);
+        }
+
+        path = content.VideoMeta.PhotoUrl;
+
+        if (!string.IsNullOrEmpty(path))
+        {
+            File.Delete(path);
+        }
 
         context.Contents.Remove(content);
 

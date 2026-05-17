@@ -69,12 +69,30 @@ public class ContentUpdateHandler : IRequestHandler<ContentUpdateCommand, Result
         content.c.Title = request.Title;
         content.c.ContentType = request.ContentType;
 
-        var message = new VideoUploadMessage(
-            request.ContentId, videoPath, photoPath);
+        // for local storage
+        string path = content.c.VideoMeta.VideoUrl;
 
-        await publisher.PublishAsync(message, cancellationToken);
+        if (!string.IsNullOrEmpty(path))
+        {
+            string? directoryName = Path.GetDirectoryName(path);
+
+            if (directoryName != null)
+                Directory.Delete(directoryName, true);
+        }
+
+        path = content.c.VideoMeta.PhotoUrl;
+
+        if (!string.IsNullOrEmpty(path))
+        {
+            File.Delete(path);
+        }
 
         await context.SaveChangesAsync();
+
+        var message = new VideoUploadMessage(
+        request.ContentId, videoPath, photoPath);
+
+        await publisher.PublishAsync(message, cancellationToken);
 
         logger.LogInformation("Content {ContentId} updated successfully",
             request.ContentId);
