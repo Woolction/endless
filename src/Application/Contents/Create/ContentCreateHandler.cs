@@ -87,6 +87,15 @@ public class ContentCreateHandler : IRequestHandler<ContentCreateCommand, Result
             ContentType = cmd.ContentType
         };
 
+        context.ContentVectors.AddRange(await context.Genres
+            .Select(genre => new ContentGenreVector()
+            {
+                Content = content,
+                    GenreId = genre.Id
+            })
+            .AsNoTracking()
+            .ToArrayAsync(cancellationToken));
+
         context.Contents.Add(content);
 
         await context.SaveChangesAsync();

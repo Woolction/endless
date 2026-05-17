@@ -170,7 +170,7 @@ public class FfmpegService : IFfmpegService
         return output;
     }
 
-    public async Task<int> GetVideoDuration(string videoPath, CancellationToken token = default)
+    public async Task<double> GetVideoDuration(string videoPath, CancellationToken token = default)
     {
         string output = await RunProcess(
             $"-v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 \"{videoPath}\"",
@@ -178,17 +178,17 @@ public class FfmpegService : IFfmpegService
 
         double seconds = double.Parse(output, CultureInfo.InvariantCulture);
 
-        return (int)Math.Round(seconds);
+        return Math.Round(seconds);
     }
 
-    public async Task<string> GetPhotoFromVideo(string videoPath, string outputPath = "/storage/images/previewPhoto.jpeg", int timeSeconds = 5, CancellationToken token = default)
+    public async Task<string> GetPhotoFromVideo(string videoPath, string outputPath = "/storage/images/previewPhoto.jpeg", double timeSeconds = 5, CancellationToken token = default)
     {
         string finalOutput = Path.Combine(
             Path.GetDirectoryName(outputPath)!,
             $"{Guid.NewGuid()}{Path.GetExtension(outputPath)}");
 
         await RunProcess(
-            $"-i \"{videoPath}\" -ss {timeSeconds} -frames:v 1 \"{finalOutput}\"", token: token);
+            $"-ss {timeSeconds} -i \"{videoPath}\" -frames:v 1 \"{finalOutput}\"", token: token);
 
         return finalOutput;
     }

@@ -91,20 +91,24 @@ public class VideoUploadingConsumer : IConsumer
 
                 if (message.VideoPath != null)
                 {
+                    Console.WriteLine("Video.Upload: get video duration with ffmpeg");
+
+                    double duration = await ffmpegService.GetVideoDuration(message.VideoPath, token);
+
+                    content.VideoMeta.DurationSeconds = (int)duration;
+                    double timeSeconds = Math.Clamp(20, 0, duration / 1.1);
+
                     if (message.PhotoPath == null)
                     {
                         Console.WriteLine("Video.Upload: get photo from video and average color");
 
-                        string photoUrl = await ffmpegService.GetPhotoFromVideo(message.VideoPath, timeSeconds: 60, token: token);
+                        string photoUrl = await ffmpegService.GetPhotoFromVideo(
+                            message.VideoPath, timeSeconds: timeSeconds, token: token);
 
                         content.VideoMeta.PhotoUrl = photoUrl;
 
                         await content.VideoMeta.SetAverageColor(photoUrl, token);
                     }
-
-                    Console.WriteLine("Video.Upload: get video duration with ffmpeg");
-
-                    content.VideoMeta.DurationSeconds = await ffmpegService.GetVideoDuration(message.VideoPath, token); ;
 
                     Console.WriteLine("Video.Upload: uploading video with ffmpeg");
 
@@ -113,22 +117,12 @@ public class VideoUploadingConsumer : IConsumer
                     File.Delete(message.VideoPath);
                 }
                 
-                context.ContentVectors.AddRange(await context.Genres
-                    .Select(genre => new ContentGenreVector()
-                    {
-                        Content = content,
-                        GenreId = genre.Id
-                    })
-                    .AsNoTracking()
-                    .ToArrayAsync(token)
-                );
-
                 Console.WriteLine("Video.Upload: save changes and create index");
 
-                await context.SaveChangesAsync();
-
                 await scope.ServiceProvider.GetRequiredService<IContentRepository>()
-                    .CreateSearchIndex(content, content.VideoMeta, token);
+                   .CreateSearchIndex(content, content.VideoMeta, token);
+
+                await context.SaveChangesAsync();
 
                 Console.WriteLine("Video.Upload: asc");
 

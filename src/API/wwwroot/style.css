@@ -22,7 +22,7 @@ body {
     left: 0;
     right: 0;
 
-    background: rgba(17, 17, 17, 0.85);
+    background: rgba(17, 17, 17, 0.75);
     backdrop-filter: blur(18px);
 
     display: flex;
@@ -199,14 +199,16 @@ body {
     right: 0;
     left: 0;
 
-    height: 50%;
+    height: 30%;
+    opacity: 0.7;
     border-radius: 14px;
 
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+    transition: opacity 0.2s ease;
 }
 
-.thumbnail-wrapper:hover .video-duration{
-    background: rgba(0, 0, 0, 0.8);
+.video-card:hover .thumbnail-wrapper::after {
+    opacity: 0;
 }
 
 .photo-preview {    
@@ -230,7 +232,7 @@ body {
     right: 8px;
     bottom: 8px;
 
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.7);
 
     color: white;
 
