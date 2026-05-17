@@ -1,8 +1,8 @@
-# Spread the word
-​If you like Endless and want to help us grow, you can contribute by spreading the word. We need people who can create hype around the project.
+# Promotion
+​Thank you for your interest in contributing to this project! If you like Endless and want to help us grow, you can contribute by spreading the word. We need people who can create hype around the project.
 
 ## The Goal
-​Create content that grabs attention. You can use loud headlines like "Endless: The YouTube killer" or anything that makes people click and check the project.
+​Create content that grabs attention. You can use loud headlines like "Endless: The YouTube killer?" or anything that makes people click and check the project.
 
 ## What you can do:
 - Create videos on YouTube or TikTok.
@@ -23,6 +23,6 @@
 ## How to claim
 ​If your content achieves success (lots of views, stars or new users):
 - ​Collect all proofs (screenshots, links, analytics).
-- ​Prove that you are the author (for example, by adding a link to this repo in the description of your video or post).
+- ​Prove that you are the author (for example, by adding a link to this repo and your github in description of your video or post).
 
 ​Contact me through GitHub Issues or other social links with all the evidence. You can also write what reward you would like to receive.
