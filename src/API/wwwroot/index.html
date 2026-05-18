@@ -10,57 +10,60 @@
 </head>
 
 <body>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <div class="layout">
-
-        <!-- TOP NAVBAR -->
         <header class="navbar">
-
             <div class="navbar-left">
-
                 <button class="menu-button" id="menuButton">
-                    ☰
+                    <i data-lucide="menu"></i>
                 </button>
-        
+
                 <a class="logo" href="/">
                     Endless
                 </a>
             </div>
 
+            <div class="navbar-right">
+                <i data-lucide="bell" width="24" height="24"></i>
+                <img class="user-avatar" />
+            </div>
         </header>
 
         <aside class="sidebar" id="sidebar">
-
             <nav class="menu">
-
                 <div class="menu-item">
-                    <span class="icon">-</span>
+                    <span class="icon">
+                        <i data-lucide="home" width="24" height="24"></i>
+                    </span> 
                     <span class="text">Home</span>
                 </div>
 
                 <div class="menu-item">
-                    <span class="icon">-</span>
-                    <span class="text">History</span>
-                </div>
-
-                <div class="menu-item">
-                    <span class="icon">-</span>
+                    <span class="icon">
+                        <i data-lucide="tv-minimal-play" width="24" height="24"></i>
+                    </span>
                     <span class="text">Channels</span>
                 </div>
 
                 <div class="menu-item">
-                    <span class="icon">-</span>
-                    <span class="text">Trending</span>
+                    <span class="icon">
+                        <i data-lucide="history" width="24" height="24"></i>
+                    </span>
+                    <span class="text">History</span>
                 </div>
 
+                <div class="menu-item">
+                    <span class="icon">
+                        <i data-lucide="album" width="24" height="24"></i>
+                    </span>
+                    <span class="text">Album</span>
+                </div>
             </nav>
-
         </aside>
 
         <main class="main" id="main">
-
             <div class="videos-grid" id="grid"></div>
-
         </main>
 
     </div>
@@ -186,11 +189,44 @@
 
             menu.className = "video-menu";
 
+            //bookmark-off if the video saved
+
+            let isSaved = false;
+
+            let saveIcon = "save";
+            let saveText = "Save";
+
+            if (isSaved) 
+            {
+                saveIcon = "save-off";
+                saveText = "Saved";
+            }
+
             menu.innerHTML = `
-            <div class="video-menu-item" data-action="save">Save</div>
-            <div class="video-menu-item" data-action="share">Share</div>
-            <div class="video-menu-item" data-action="playlist">Playlist</div>
-            <div class="video-menu-item danger" data-action="report">Report</div>`;
+            <div class="video-menu-item" data-action="save">
+                <i data-lucide="${saveIcon}"></i> 
+                <div class="video-menu-item-text">${saveText}</div>
+            </div>
+            <div class="video-menu-item" data-action="share">
+                <i data-lucide="share-2"></i> 
+                <div class="video-menu-item-text">Share</div>
+            </div>
+            <div class="video-menu-item" data-action="album">
+                <i data-lucide="album"></i> 
+                <div class="video-menu-item-text">Album</div>
+            </div>
+            <div class="video-menu-item" data-action="not-interest">
+                <i data-lucide="ban"></i> 
+                <div class="video-menu-item-text">Not interest</div>
+            </div>
+            <div class="video-menu-item" data-action="put-away-channel">
+                <i data-lucide="octagon-minus"></i> 
+                <div class="video-menu-item-text">Put away channel</div>
+            </div>
+            <div class="video-menu-item danger" data-action="report">
+                <i data-lucide="message-square-warning"></i> 
+                <div class="video-menu-item-text">Report</div>
+            </div>`;
 
             menu.addEventListener("click", (e) => {
                 e.stopPropagation();
@@ -204,16 +240,43 @@
 
                 switch (action) {
                     case "save":
+
                         console.log("Save video:", currentVideo.contentId);
+
+                        isSaved = !isSaved;
+
+                        let itemIcon = item.querySelector(".video-menu-item svg");
+                        let itemText = item.querySelector(".video-menu-item-text");
+
+                        if (isSaved) 
+                        {
+                            itemIcon.setAttribute("data-lucide", "save-off");
+                            itemText.textContent = "Saved";
+                        }
+                        else 
+                        {
+                            itemIcon.setAttribute("data-lucide", "save");
+                            itemText.textContent = "Save";
+                        }
+
+                        lucide.createIcons();
 
                         break;
                     case "share":
                         console.log("Share video:", currentVideo.title);
 
                         break;
-                    case "playlist":
-                        console.log("Playlist:", currentVideo);
+                    case "album":
+                        console.log("Album:", currentVideo);
 
+                        break;
+                    case "not-interest": 
+                        console.log("Not interest:", currentVideo.contentId);
+
+                        break;
+                    case "put-away-channel":
+                        console.log("Put awayted:", currentVideo.contentId)
+                        
                         break;
                     case "report":
                         console.log("Report:", currentVideo.contentId);
@@ -250,7 +313,79 @@
                         </div>
 
                         <div class="channel-name">
-                            Endless
+                            Endless 
+                            <button class="tooltip-wrapper">
+                                <i class="verified-badge" data-lucide="badge-check"></i>
+                                <div class="tooltip">
+                                    verification badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="star-badge" data-lucide="square-star"></i>
+                                <div class="tooltip">
+                                    square star badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="star-badge" data-lucide="circle-star"></i>
+                                <div class="tooltip">
+                                    circle star badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="award-badge" data-lucide="award"></i>
+                                <div class="tooltip">
+                                    award badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="cpu-badge" data-lucide="cpu"></i>
+                                <div class="tooltip">
+                                    cpu badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="gpu-badge" data-lucide="gpu"></i>
+                                <div class="tooltip">
+                                    gpu badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="smm-badge" data-lucide="megaphone"></i>
+                                <div class="tooltip">
+                                    smm badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="handshake-badge" data-lucide="handshake"></i>
+                                <div class="tooltip">
+                                    handshake badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="minus-badge" data-lucide="badge-minus"></i>
+                                <div class="tooltip">
+                                    minus badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="x-badge" data-lucide="badge-x"></i>
+                                <div class="tooltip">
+                                    x badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="more-reports-badge" data-lucide="message-circle-warning"></i>
+                                <div class="tooltip">
+                                    more reports badge
+                                </div>
+                            </button>
+                            <button class="tooltip-wrapper">
+                                <i class="bug-badge" data-lucide="bug"></i>
+                                <div class="tooltip">
+                                    bunned badge
+                                </div>
+                            </button>        
                         </div>
 
                         <div class="video-stats">
@@ -258,8 +393,9 @@
                         </div>
                     </div>
                             
-                    <button class="video-menu-btn">⋮</button>
-
+                    <button class="video-menu-btn">
+                        <i data-lucide="more-vertical"></i>    
+                    </button>
                 </div>`;
 
                 card.querySelector(".video-menu-btn").addEventListener("click", (e) => {
@@ -270,6 +406,7 @@
                     if (menu.classList.contains("open") && currentButton === button) {
                         
                         menu.classList.remove("open");
+
                         currentButton = null;
                         currentVideo = null;
 
@@ -345,18 +482,23 @@
                 card.addEventListener("mouseenter", () => {
 
                     card.style.background = rgbaColor;
+                    card.style.border = "1px solid rgba(255, 255, 255, 0.2)";
                 });
 
                 card.addEventListener("mouseleave", () => {
 
-                    card.style.background = "#0f0f0f";
+                    card.style.background = "rgb(10, 10, 10)";
+                    card.style.border = "1px solid rgba(255, 255, 255, 0)";
                 });
 
                 grid.appendChild(card);
             });
+                
+            lucide.createIcons();
         }
 
         window.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
             SetSidebar();
             fetchVideos();
         });
