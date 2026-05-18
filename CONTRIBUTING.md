@@ -2,8 +2,6 @@
 Thank you for your interest in contributing to this project! To protect the project and its users, we require all contributors to agree to sign our [Contributor License Agreement (CLA)](https://gist.github.com/Woolction/7ead628e8c36751793ed60536c2bfc9f). 
 All pull requests require a signed CLA before they can be merged.
 
-`[Project Structure](STRUCTURE.md)`
-
 ## Issues
 If you find a bug, please open an Issue and include:
 - A clear description of the problem.
@@ -64,3 +62,5 @@ git push origin feat/your-feature-name
 * **​Governance:** Significant contributors will have a vote in future project decisions.
 * **​Mentions:** You will be mentioned in the project history.
 * **Monetization:** You will receive 75% - 90%. [Learn more about Monetization.](https://github.com/Woolction/endless/wiki/Monetization-in-Endless)
+
+***for convenience:*** [*`Project Structure`*](STRUCTURE.md)
