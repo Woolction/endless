@@ -1,9 +1,9 @@
 # Endless
 
-[![CI/CD](https://github.com/Woolction/endless/actions/workflows/dotnet.yaml/badge.svg)](https://github.com/Woolction/endless/actions/workflows/dotnet.yaml)
-![License](https://img.shields.io/github/license/Woolction/Endless)
-[![CLA assistant](https://cla-assistant.io/readme/badge/Woolction/Endless)](https://cla-assistant.io/Woolction/Endless)
-![Issues](https://img.shields.io/github/issues/Woolction/Endless)
+[![CI/CD](https://github.com/zynres/endless/actions/workflows/dotnet.yaml/badge.svg)](https://github.com/zynres/endless/actions/workflows/dotnet.yaml)
+![License](https://img.shields.io/github/license/zynres/endless)
+[![CLA assistant](https://cla-assistant.io/readme/badge/zynres/endless)](https://cla-assistant.io/zynres/endless)
+![Issues](https://img.shields.io/github/issues/zynres/endless)
 
 Endless is an open-source distributed video hosting platform focused on high-performance and fairness for content creators and viewers, providing an easy environment for building an audience and privacy for all users of this platform. [Learn more about Endless.](https://github.com/Woolction/endless/wiki)
 
@@ -11,12 +11,12 @@ Endless is an open-source distributed video hosting platform focused on high-per
 
 YouTube has become a corporate monolith focused on advertising and data collection. Endless was created to make it easy for viewers to watch what they love and for content creators to grow. Endless is built on transparency, fairness, and performance.
 ​
-- **No Shadowbans:** We don’t use hidden suppression. Whether you edit or re-upload your content, your reach remains organic and predictable: [Learn more about Banning Policy.](https://github.com/Woolction/endless/wiki/Banning-Policy)
-- **Opt-in Advertising:** No forced ads that ruin the viewing experience. If a promotion isn't relevant to you, skip it instantly: [Learn more about Advertising Policy.](https://github.com/Woolction/endless/wiki/Advertising-Policy)
-- **Privacy by Design:** We collect only what is strictly necessary for the platform to function. We never sell your information to third-party brokers: [Learn more about Privacy Policy.](https://github.com/Woolction/endless/wiki/Privacy-Policy)
-- **Creator-First Revenue:** Endless offers a disruptive 50% to 90% revenue share for creators, compared to the industry standard: [Learn more about Monetization.](https://github.com/Woolction/endless/wiki/Monetization-in-Endless)
+- **No Shadowbans:** We don’t use hidden suppression. Whether you edit or re-upload your content, your reach remains organic and predictable: [Learn more about Banning Policy.](https://github.com/zynres/endless/wiki/Banning-Policy)
+- **Opt-in Advertising:** No forced ads that ruin the viewing experience. If a promotion isn't relevant to you, skip it instantly: [Learn more about Advertising Policy.](https://github.com/zynres/endless/wiki/Advertising-Policy)
+- **Privacy by Design:** We collect only what is strictly necessary for the platform to function. We never sell your information to third-party brokers: [Learn more about Privacy Policy.](https://github.com/zynres/endless/wiki/Privacy-Policy)
+- **Creator-First Revenue:** Endless offers a disruptive 50% to 90% revenue share for creators, compared to the industry standard: [Learn more about Monetization.](https://github.com/zynres/endless/wiki/Monetization-in-Endless)
 - **Community-Led Evolution:** Endless is open to the world. Any developer can contribute to the core, and every user has a voice in reporting issues or suggesting changes: [Learn more about contributing.](CONTRIBUTING.md)
-- **Radical Transparency** ([The Endless Wiki](https://github.com/Woolction/endless/wiki)): No "black box" algorithms. Our Wikipedia-style documentation allows anyone to see how our systems work-from Vector Embeddings to ranking logic.
+- **Radical Transparency** ([The Endless Wiki](https://github.com/zynres/endless/wiki)): No "black box" algorithms. Our Wikipedia-style documentation allows anyone to see how our systems work-from Vector Embeddings to ranking logic.
 
 
 ### Core Infrastructure
@@ -42,7 +42,7 @@ Endless is engineered for high availability and low latency, utilizing a modern 
 
 #### 1. Clone repo:
 ```bash
-git clone https://github.com/woolction/endless
+git clone https://github.com/zynres/endless.git
 
 cd endless
 ```
@@ -159,11 +159,11 @@ Endless is built and maintained int the free time of creator and contributors. T
 2. ***`Promotion:`*** Want to help us grow? Check out our [Promotion Guide](PROMOTION.md) We need people who can create hype around the project.
 3. ***`Issues:`*** Find bugs and report them as described in [Contributing Rules](CONTRIBUTING.md) or come up with new features
 
-***If you want to support the project,  you can do so via [GitHub Sponsors](https://github.com/sponsors/Woolction) or [Ko-fi](https://ko-fi.com/woolction) or [DonationAlerts](https://www.donationalerts.com/r/solderey) we would be very happy with even a very small payment***
+***If you want to support the project,  you can do so via [GitHub Sponsors](https://github.com/sponsors/zynres) or [Ko-fi](https://ko-fi.com/zynres) or [DonationAlerts](https://www.donationalerts.com/r/solderey) we would be very happy with even a very small payment***
 
 ## License
 
 This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). 
 For more details, see the [LICENSE](LICENSE) file.
 
-#### ***Copyright © 2026 Woolction.***
+#### ***Copyright © 2026 Zynres.***
