@@ -2,6 +2,8 @@
 Thank you for your interest in contributing to this project! To protect the project and its users, we require all contributors to agree to sign our [Contributor License Agreement (CLA)](https://gist.github.com/Woolction/7ead628e8c36751793ed60536c2bfc9f). 
 All pull requests require a signed CLA before they can be merged.
 
+`[Project Structure](STRUCTURE.md)`
+
 ## Issues
 If you find a bug, please open an Issue and include:
 - A clear description of the problem.
