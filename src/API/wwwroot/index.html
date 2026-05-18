@@ -215,13 +215,13 @@
                 <i data-lucide="album"></i> 
                 <div class="video-menu-item-text">Album</div>
             </div>
+            <div class="video-menu-item" data-action="album">
+                <i data-lucide="download"></i> 
+                <div class="video-menu-item-text">Download</div>
+            </div>
             <div class="video-menu-item" data-action="not-interest">
                 <i data-lucide="ban"></i> 
                 <div class="video-menu-item-text">Not interest</div>
-            </div>
-            <div class="video-menu-item" data-action="put-away-channel">
-                <i data-lucide="octagon-minus"></i> 
-                <div class="video-menu-item-text">Put away channel</div>
             </div>
             <div class="video-menu-item danger" data-action="report">
                 <i data-lucide="message-square-warning"></i> 
@@ -270,12 +270,12 @@
                         console.log("Album:", currentVideo);
 
                         break;
-                    case "not-interest": 
-                        console.log("Not interest:", currentVideo.contentId);
+                    case "download": 
+                        console.log("Download", currentVideo.contentId);
 
                         break;
-                    case "put-away-channel":
-                        console.log("Put awayted:", currentVideo.contentId)
+                    case "not-interest":
+                        console.log("Not interest:", currentVideo.contentId)
                         
                         break;
                     case "report":
