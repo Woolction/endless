@@ -1,0 +1,39 @@
+.thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.thumbnail-wrapper::after {
+    content: "";
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    height: 40%;
+    opacity: 0.6;
+    border-radius: 14px;
+
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+    transition: opacity 0.2s ease;
+}
+
+.video-card:hover .thumbnail-wrapper::after {
+    opacity: 0;
+}
+
+.photo-preview {
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+
+    object-fit: cover;
+    display: block;
+
+    border-radius: 14px;
+
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
+}

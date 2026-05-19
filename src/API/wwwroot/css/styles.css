@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: rgb(10, 10, 10);
+    color: white;
+
+    font-family: Inter, sans-serif;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+.main {
+    margin-left: 220px;
+    margin-top: 64px;
+
+    padding: 24px;
+
+    transition: 0.25s;
+}
+
+.main.expanded {
+    margin-left: 70px;
+}
+
+@media (max-width: 1430px) { 
+    .main {
+        margin-left: 0;
+    }
+}
