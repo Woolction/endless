@@ -1,16 +1,20 @@
 using Domain.Common.Interfaces.Services;
+using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Diagnostics;
+using System.Text;
 
 namespace Infrastructure.Services;
 
 public class FfmpegService : IFfmpegService
 {
-    public readonly IR2Service r2Service;
+    private readonly ILogger<FfmpegService> logger;
+    private readonly IR2Service r2Service;
 
-    public FfmpegService(IR2Service r2Service)
+    public FfmpegService(ILogger<FfmpegService> logger, IR2Service r2Service)
     {
         this.r2Service = r2Service;
+        this.logger = logger;
     }
 
     public async Task<string> UploadGeneratedVideos(string videoPath, CancellationToken token = default)
@@ -41,8 +45,8 @@ public class FfmpegService : IFfmpegService
         // video height
         int height = await GetVideoHeight(videoPath, token);
 
+        // video fps
         int result = await GetVideoFps(videoPath, token);
-
         int fps = result > 60 ? 60 : result;
 
         var variants = new List<int>();
@@ -56,46 +60,42 @@ public class FfmpegService : IFfmpegService
         else if (height >= 360)
             variants.AddRange([360]);
 
-        int count = variants.Count;
+        var split = new StringBuilder($"[0:v]split={variants.Count}");
+        var filters = new StringBuilder();
+        var maps = new StringBuilder();
 
-        string split = $"[0:v]split={count}";
-
-        for (int i = 0; i < count; i++)
-            split += $"[v{i}]";
-
-        split += ";";
-
-        string filters = "";
-
-        for (int i = 0; i < count; i++)
-            filters += $"[v{i}]fps={fps},scale=-2:{variants[i]}[v{variants[i]}];";
-
-        string maps = "";
         var streamMaps = new List<string>();
 
         int gap = fps * 2;
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < variants.Count; i++)
         {
-            maps += $"-map \"[v{variants[i]}]\" ";
-            maps += "-map 0:a:0 ";
+            int variant = variants[i];
 
-            maps += $"-c:v:{i} libx264 -preset veryfast ";
-            maps += $"-b:v:{i} {GetBitrate(variants[i], fps)} ";
+            filters.Append($"[v{i}]fps={fps},scale=-2:{variant}[v{variant}];");
+            split.Append($"[v{i}]");
 
-            maps += $"-c:a:{i} aac -b:a:{i} 128k ";
+            maps.Append($"-map \"[v{variant}]\" ");
+            maps.Append("-map 0:a:0 ");
 
-            maps += $"-g {gap} -keyint_min {gap} -sc_threshold 0 ";
+            maps.Append($"-c:v:{i} libx264 -preset veryfast ");
+            maps.Append($"-b:v:{i} {GetBitrate(variant, fps)} ");
+
+            maps.Append($"-c:a:{i} aac -b:a:{i} 128k ");
+
+            maps.Append($"-g {gap} -keyint_min {gap} -sc_threshold 0 ");
 
             streamMaps.Add($"v:{i},a:{i}");
         }
+
+        split.Append(';');
 
         string streamMap = string.Join(" ", streamMaps);
 
         string args =
             $"-i \"{videoPath}\" " +
-            $"-filter_complex \"{split}{filters}\" " +
-            maps +
+            $"-filter_complex \"{split.ToString()}{filters.ToString()}\" " +
+            maps.ToString() +
             "-f hls " +
             "-hls_time 4 " +
             "-hls_playlist_type vod " +
@@ -165,7 +165,7 @@ public class FfmpegService : IFfmpegService
         if (process.ExitCode != 0)
             throw new Exception($"{fileName} failed with code: {process.ExitCode}\n{error}");
 
-        Console.WriteLine($"{fileName} finished process: {output}");
+        logger.LogInformation("{fileName} finished process: {output}", fileName, output);
 
         return output;
     }
