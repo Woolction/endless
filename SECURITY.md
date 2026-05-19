@@ -2,9 +2,7 @@
 
 We take the security of our project seriously. If you have discovered a vulnerability, we would be extremely grateful for your responsible disclosure.
 
-Please do not create public Issues to report vulnerabilities. Instead, use the communication channels described below.
-
----
+**Please do not create public Issues to report vulnerabilities. Instead, use the communication channels described below.**
 
 ## Supported Versions
 
@@ -15,9 +13,7 @@ We actively release security updates only for the versions listed below. Please 
 | Supported | Yes |
 | Unsupported | No |
 
----
-
-### Reporting a Vulnerability
+## Reporting a Vulnerability
 
 If you have found a security bug, please submit a report using one of the following methods:
 
@@ -29,8 +25,6 @@ If you have found a security bug, please submit a report using one of the follow
 * **Steps to Reproduce (PoC):** Step-by-step instructions, code snippets, or screenshots so we can reproduce the issue.
 * **Environment:** Project version, OS, and runtime/language version.
 
----
-
 ## Our Response Process
 
 Upon receiving your report, we commit to the following process:
@@ -40,9 +34,7 @@ Upon receiving your report, we commit to the following process:
 3. Develop a fix. We aim to resolve the issue as quickly as possible (typically within 7–30 days, depending on complexity).
 4. Publish a security release and issue a Security Advisory, where we will gladly credit you for the discovery if you wish.
 
-We ask that you do not disclose the vulnerability publicly (on social media, blogs, or public issues) until we have released an official fix.
-
----
+**We ask that you do not disclose the vulnerability publicly (on social media, blogs, or public issues) until we have released an official fix.**
 
 ## Acknowledgments
 
