@@ -60,13 +60,13 @@ public static class ProgramPipeline
         // Cors
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("Frontend", policy =>
+            /*options.AddPolicy("Frontend", policy =>
             {
                 policy.WithOrigins("http://localhost:5100");
                 policy.AllowAnyHeader();
                 policy.AllowAnyMethod();
                 policy.AllowCredentials();
-            });
+            });*/
         });
 
         // Authentication
@@ -199,7 +199,7 @@ public static class ProgramPipeline
         builder.Services.AddHostedService<RabbitMqConsumers>();
     }
 
-    public static async Task MiddlewareRegistry(this WebApplication app)
+    public static void MiddlewareRegistry(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
@@ -239,7 +239,7 @@ public static class ProgramPipeline
 
         app.UseRouting();
 
-        app.UseCors("Frontend");
+        //app.UseCors("Frontend");
         app.UseAuthentication();
         app.UseAuthorization();
 
