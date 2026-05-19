@@ -1,6 +1,6 @@
 # Endless
 
-[![CI/CD](https://github.com/zynres/endless/actions/workflows/dotnet.yaml/badge.svg)](https://github.com/zynres/endless/actions/workflows/dotnet.yaml)
+[![CI](https://github.com/zynres/endless/actions/workflows/ci.yaml/badge.svg)](https://github.com/zynres/endless/actions/workflows/ci.yaml)
 ![License](https://img.shields.io/github/license/zynres/endless)
 [![CLA assistant](https://cla-assistant.io/readme/badge/zynres/endless)](https://cla-assistant.io/zynres/endless)
 ![Issues](https://img.shields.io/github/issues/zynres/endless)
