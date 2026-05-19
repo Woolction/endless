@@ -21,6 +21,11 @@
     z-index: 2000;
 }
 
+.navbar svg {
+    width: 24px;
+    height: 24px;
+}
+
 .navbar-left,
 .navbar-right {
     display: flex;

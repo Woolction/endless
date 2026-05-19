@@ -86,6 +86,11 @@
     font-size: 22px;
 }
 
+.icon svg {
+    width: 24px; 
+    height: 24px;
+}
+
 .sidebar .text {
     font-size: 14px;
     font-weight: 500;

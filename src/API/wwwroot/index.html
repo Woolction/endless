@@ -6,7 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Endless</title>
 
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/user.css">
+
+    <link rel="stylesheet" href="/css/video-card/thumbnail.css">
+    <link rel="stylesheet" href="/css/video-card/video.css">
+    <link rel="stylesheet" href="/css/video-card/video-menu.css">
+    <link rel="stylesheet" href="/css/video-card/channel.css">
+
+    <link rel="stylesheet" href="/css/badges.css">
+    <link rel="stylesheet" href="/css/tooltip.css">
 </head>
 
 <body>
@@ -15,7 +27,7 @@
     <div class="layout">
         <header class="navbar">
             <div class="navbar-left">
-                <button class="menu-button" id="menuButton">
+                <button class="sidebar-button" id="menuButton">
                     <i data-lucide="menu"></i>
                 </button>
 
@@ -25,37 +37,37 @@
             </div>
 
             <div class="navbar-right">
-                <i data-lucide="bell" width="24" height="24"></i>
+                <i data-lucide="bell"></i>
                 <img class="user-avatar" />
             </div>
         </header>
 
         <aside class="sidebar" id="sidebar">
-            <nav class="menu">
-                <div class="menu-item">
+            <nav class="sidebar-menu">
+                <div class="sidebar-menu-item">
                     <span class="icon">
-                        <i data-lucide="home" width="24" height="24"></i>
+                        <i data-lucide="home"></i>
                     </span> 
                     <span class="text">Home</span>
                 </div>
 
-                <div class="menu-item">
+                <div class="sidebar-menu-item">
                     <span class="icon">
-                        <i data-lucide="tv-minimal-play" width="24" height="24"></i>
+                        <i data-lucide="tv-minimal-play"></i>
                     </span>
                     <span class="text">Channels</span>
                 </div>
 
-                <div class="menu-item">
+                <div class="sidebar-menu-item">
                     <span class="icon">
-                        <i data-lucide="history" width="24" height="24"></i>
+                        <i data-lucide="history"></i>
                     </span>
                     <span class="text">History</span>
                 </div>
 
-                <div class="menu-item">
+                <div class="sidebar-menu-item">
                     <span class="icon">
-                        <i data-lucide="album" width="24" height="24"></i>
+                        <i data-lucide="album"></i>
                     </span>
                     <span class="text">Album</span>
                 </div>
