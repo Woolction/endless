@@ -1,0 +1,76 @@
+.verified-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #4ade80;
+}
+
+.handshake-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #34d399;
+}
+
+.star-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #facc15;
+}
+
+.award-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #fb923c;
+}
+
+.cpu-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #38bdf8;
+}
+
+.gpu-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #a78bfa;
+}
+
+.smm-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #f472b6;
+}
+
+.minus-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #ff4d4d;
+}
+
+.x-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #ff4d4d;
+}
+
+.more-reports-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #ff4d4d;
+}
+
+.bug-badge {
+    width: 14px;
+    height: 14px;
+
+    color: #ff4d4d;
+}

@@ -1,0 +1,37 @@
+.channel-avatar {
+    width: 40px;
+    height: 40px;
+
+    background: #222;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    flex-shrink: 0;
+
+    transition: transfrom 0.4s;
+}
+
+.channel-avatar:hover {
+    transform: scale(1.04);
+}
+
+.channel-name {
+    display: flex;
+    align-items: center;
+
+    width: fit-content;
+
+    cursor: pointer;
+
+    gap: 6px;
+    margin-top: 6px;
+    padding-bottom: 6px;
+    font-size: 14px;
+    color: #999;
+}
+
+.channel-name:hover {
+    color: rgb(210, 210, 210);
+}
