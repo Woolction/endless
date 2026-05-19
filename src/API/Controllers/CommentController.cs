@@ -9,6 +9,7 @@ using Application.Utilities;
 using Domain.Common.Enums;
 using Domain.Entities;
 using API.Extensions;
+using Application.Comments.Update;
 
 namespace API.Controllers;
 
@@ -66,7 +67,7 @@ public class CommentController : ControllerBase
 
     [HttpPost("content/{ContentId}")]
     [Authorize(Policy = nameof(UserRole.User))]
-    public async Task<ActionResult<CommentSendedDto>> SendComment(Guid ContentId, [FromBody] CreateCommentCommand commentDto)
+    public async Task<ActionResult<CommentSendedDto>> SendComment(Guid ContentId, [FromBody] CreateCommentCommand command)
     {
         Guid currentUserId = this.GetIDFromClaim();
 
@@ -97,7 +98,7 @@ public class CommentController : ControllerBase
         {
             CommentatorId = currentUserId,
             ContentId = ContentId,
-            Text = commentDto.Text,
+            Text = command.Text,
             PublicatedDate = DateTime.UtcNow
         };
 
@@ -121,7 +122,7 @@ public class CommentController : ControllerBase
 
     [HttpPut("{CommentId}")]
     [Authorize(Policy = nameof(UserRole.User))]
-    public async Task<ActionResult<CommentDto>> UpdateComment(Guid CommentId, string text)
+    public async Task<ActionResult<CommentDto>> UpdateComment(Guid CommentId, UpdateCommentCommand command)
     {
         var comment = await context.Comments
             .Select(comment => new
@@ -135,9 +136,9 @@ public class CommentController : ControllerBase
         if (comment is null || comment.c is null)
             return NotFound("Comment not found");
 
-        string? oldText = comment.c.Text;
+        string oldText = comment.c.Text.Sanitize();
 
-        comment.c.Text = text;
+        comment.c.Text = command.Text;
 
         CommentDto responseDto = new(
             comment.c.Id, comment.c.Text,
@@ -148,7 +149,7 @@ public class CommentController : ControllerBase
 
         logger.LogInformation(
             "Comment {CommentId} updated successfully. Changed the text from: {OldText} to: {NewText}",
-            CommentId, oldText, comment.c.Text);
+            CommentId, oldText, command.Text.Sanitize());
 
         return Ok(responseDto);
     }
