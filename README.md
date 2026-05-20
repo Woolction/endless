@@ -91,7 +91,7 @@ Endless is built and maintained int the free time of creator and contributors. T
 2. ***`Promotion:`*** Want to help us grow? Check out our [Promotion Guide](PROMOTION.md) We need people who can create hype around the project.
 3. ***`Issues:`*** Find bugs and report them as described in [Contributing Rules](CONTRIBUTING.md) or come up with new features
 
-***If you want to support the project,  you can do so via [GitHub Sponsors](https://github.com/sponsors/zynres) or [Ko-fi](https://ko-fi.com/zynres) or [DonationAlerts](https://www.donationalerts.com/r/solderey) we would be very happy with even a very small payment***
+***If you want to support the project,  you can do so via [GitHub Sponsors](https://github.com/sponsors/zynres) we would be very happy with even a very small payment***
 
 ## License
 
